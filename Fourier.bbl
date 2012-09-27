@@ -1,0 +1,13 @@
+\begin{thebibliography}{H{\aa}s01}
+
+\bibitem[AB09]{AB}
+S.~Arora and B.~Barak.
+\newblock {\em Computational Complexity - A Modern Approach}.
+\newblock Cambridge University Press, 2009.
+
+\bibitem[H{\aa}s01]{Has97}
+J.~H{\aa}stad.
+\newblock Some optimal inapproximability results.
+\newblock {\em Journal of the ACM}, 48(4):798--859, 2001.
+
+\end{thebibliography}

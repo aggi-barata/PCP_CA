@@ -1,0 +1,121 @@
+\section{Notations}
+
+
+
+
+A PCP system has several parameters. Ideally, we would like all
+parameters, except the completeness, to be as small as possible.
+
+\begin{enumerate}
+\item {\em Completeness(c).} The minimum probability with which
+the prover can convince a verifier about a correct proof.
+\item {\em Soundness (s).} The maximum probability with which a verifier
+accepts an incorrect proof.
+\item {\em Queries (q).} The number of queries made by the verifier
+to the purported proof.
+%\item {\em Size (m).} 
+\item {\em Randomness (r).} The number of random bits used by the verifier.
+A typical verifier uses $O(\log n)$ randomness. However, there are
+several recent results which use only $(1 + o(1))\cdot\log n$ randomness.
+\item {\em Alphabet ($\Sigma$).} The alphabet used in the new proof. The 
+size of the alphabet is a lower bound on the soundness of a PCP. So, if
+one seeks a low error, having a large alphabet is imminent.
+\end{enumerate}
+
+We denote by $PCP_{c,s}\left[r, q\right]_\Sigma$ the class of
+languages that have a PCP verifier with completeness $c$, soundness
+$s$, randomness $r$ and makes $q$ queries to the purported proof over
+an alphabet $\Sigma$. It
+is often useful to imagine all the parameters as a function of $n$.\\
+
+The PCP's with the projection property can also formulated a certain
+CSP called the {\sc Label-cover} problem. An instance of a {\sc Label-cover}
+is a bi-partitite graph whose edges are between questions of first prover and
+those of the second prover. For every edge, there is an associated projection
+that uniquely identifies the label of second vertex given the label of a vertex
+from the first set. The goal is find a labelling that maximizes the number of
+satisfied edges.  The following formalizes the notion we have been talking
+in the prequel.
+
+\begin{definition}[{\sc Label-cover}] An instance of {\sc Label-cover} 
+contains a regular bi-partite multi-graph $G = (A, B, E)$ and two finite
+sets $\Sigma_A$ and $\Sigma_B$, where $|\Sigma_A| \ge |\Sigma_B|$.
+Every vertex in $A$ is supposed to get a label from $\Sigma_A$, and
+every vertex in $B$ is supposed to get a label from $\Sigma_B$. For each
+edge $e \in E$ there is a projection $\pi_e: \Sigma_A \rightarrow \Sigma_B$
+which is a partial function.
+
+Given a labeling to the vertices of the graph, that is, functions $\psi_A:A 
+\rightarrow \Sigma_A$ and $\psi_B:B \rightarrow \Sigma_B$, an edge $e =(a,b)$
+is said to be ``satisfied'' if $\pi_e(\psi_A(a)) = \psi_B(b)$ (if $\pi(\psi_A(a))$
+is undefined; in which case the edge is 
+deemed to be unsatisfied.) The goal is to find a labeling which 
+maximizes the number of satisfied edges.
+\end{definition} 
+
+We say that $\gamma$ fraction of the edges are satisfiable if there exists a labeling
+that satisfies $\gamma$ fraction of the edges. In the {\sc Label-cover} notation,
+the size corresponds to the number of vertices $|A| + |B|$. The alphabet corresponds
+to the larger set of labels $\Sigma_A$.
+
+The {\sc Label-cover} seems to be extremely useful in establishing
+inapproximability results. In particular, it is the starting point for
+the famous H{\aa}stad's result (which also happens to be the backbone
+of this work).
+
+In the world of provers, the projection property is equivalent to a
+$2$ prover $1$ round game and has the following correspondence with
+the {\sc Label-cover}: The vertices in $A$ and $B$ are the set of
+questions that can posed by the verifier to the first prover and the
+second prover respectively. The set of labels corresponds to the
+answers of the provers. So, upon receiving an answer from the first
+prover, the verifier rejects the claim made by the provers or has
+uniquely determined the answer to the second prover's question.
+
+\subsection{Error Correcting Codes}
+
+An important component of the proof are error-correcting
+codes. Informally, an error-correcting code of block length $n$ over
+an alphabet $\Sigma = \{0,1\}$ is a collection of strings from
+$\Sigma^n$, called codewords.  A code $\A \subseteq \Sigma^n$ is
+linear if it is closed under addition and scalar multiplication, that
+is, $\A$ is a linear subspace of $\mathbb{F}_2^n$.  An important
+property of any code is its {\em minimum distance}. For any vectors
+${\bf x,y} \in \Sigma^n$, the hamming weight of {\bf x} is the number
+of nonzero coordinates of {\bf x}, also known by $wt({\bf x})$. The
+weight function is a norm and the correѕponding metric $d({\bf x, y})$
+is the weight of difference between {\bf x} and {\bf
+  y}. The minimum distance $d(\A)$ of the code $\A$ is the minimum
+hamming distance $d(\bf x, y)$ taken over all pairs of distinct
+codewords in \A.  It is often useful to normalize the Hamming distance
+w.r.t. $n$. So, the minimum distance of a code is 
+$\min_{{\bf x, y} \in \A }\ d(\bf x, y)/n$.
+
+For linear codes, the minimum distance of a code is equal to the
+weight of the lightest nonzero codeword ${\bf x} \in \A - \{{\bf
+  0}\}$.  It is customary to denote a linear code over $\Sigma$ with
+block length $n$, rank $k$ and minimum distance $d$ by $[n, k, d]$
+code. Finally, we use the notation $[n]$ to denote the set $\{1, 2
+\ldots n\}$.
+
+We now introduce a couple of problems which are the mainstay of this
+paper. First, we start with {\sc Max-$q$Lin}.  It is constraint
+satisfaction problem over a set of variables. Every constraint is a
+linear function over at most $q$ variables. The goal is find an
+assignment to the variables which maximizes the fraction of satisfied
+constraints. We define it in terms of its gap problem.
+
+\begin{theorem}[{\sc GAP-$q$LIN}$_{\delta, \epsilon}$] Given a system
+  of linear equations over $GF(2)$, each of which has $q$ variables,
+  then for every $\delta, \epsilon > 0$, it is NP-hard to distinguish
+  between the following:
+\begin{itemize}
+\item {\sf YES Case:} There is an assignment to the variables which
+  satisfies $1-\delta$ fraction of the equations.
+\item {\sf NO Case:} Every assignment satisfies only $\frac{1}{2} +
+  \epsilon$ fraction of the equations.
+\end{itemize}
+\end{theorem}
+
+It is well known that if one establishes that hardness of {\sc Gap-$q$Lin}$_{\delta, \epsilon}$, it implies that
+approximating {\sc Max-$q$Lin} to $\delta/\epsilon$ is hard.

@@ -1,0 +1,589 @@
+\chapter{Polynomially Small Completeness Error}\label{section:Iterated}
+
+In this section, we construct PCPs with polynomially low completeness
+error and yet, have a low (even sub-constant) soundness error. The bottleneck to
+achieving polynomially low completeness error was that the number of
+queries grew hand in hand with the completeness error. Thus, if we set
+$r = \log \log n$ in Lemma \ref{Camplify} to get polynomially 
+small completeness error, the queries made will be
+{\sf Poly}($n$). At which point, any technique to rescue the query
+size will result in either perturbing the completeness error to a
+constant or soundness error into the $1/{\sf polylog}$ regime. And
+both these means defeat the ends that we set out to achieve as the
+former the destroys the completeness error. While the latter shall
+take us into a region which we currently cannot come out of. Thus,
+both these approaches are ruled out.
+
+However, we cannot allow the query size to grow along the completeness
+if we are to achieve out ends. The approach we adopt is simple, we use
+composition to reduce the query size and at this point of time, there
+are a lot of already established composition theorems. However, none
+of them will be suitable to our needs as we need a low completeness
+error and almost all the exant theorems either are non-linear or have
+a constant error in completeness. So, in a sense we are forced to
+self-compose with our constructions. And as it turns out it is not the
+worst thing that can happen. To that end, we start by recollecting
+Corollary \ref{iterate} that we construct after a tensoring and
+performing sequential repetition on a basic assignment tester obtained from Lemma
+\ref{Tester}.
+
+\begin{corollary}
+  For every $\rho > 0, \delta < 1/4$, there is an absolute constant $\vartheta$,  given a
+$(\rho, \delta)$-assignment tester that uses $r_v$ random bits to make $q$ queries, we can construct a ${\cal O}\left(\rho^2
+      \cdot \vartheta , {\delta}\right)$-assignment tester. The new assginment tester 
+uses $r_v \cdot  \vartheta)$ random bits and makes ${\cal O}(\vartheta \cdot q^2)$ queries.
+ \end{corollary}
+
+
+
+ \noindent Let us take a moment and reflect the hypothetical
+ parameters that one might obtain if we composed the above Corollary
+ with itself (presented in Table \ref{table:selfcompose}). In short, we would double the error while reducing the
+ queries as a function of $n$ (ref. Claim \ref{dying})\footnote{We
+   prove a strong version of this Claim at a later point}. So, our
+ blue print of the construction will be as follows.
+
+ \begin{table}[h]
+\centering 
+\begin{tabular}{|l|c|c|}
+  \hline 
+  \ & & \\
+  {\em Parameters}  &{\sc Inner} & \parbox{1.65in} {\sc Self Composed Inner}  \\
+  \hline
+%\ &  & & \\ 
+  \hline
+  {\tt Completeness error} & $\rho(n)$ & $2 \cdot \delta(n)$  \\  
+  {\tt Soundness error} &  $\delta(n)$ & $2 \cdot \delta(n)$   \\
+  {\tt Queries} &   $q(n)$ & $\q(\q(n))$  \\
+  {\tt Randomness}&  $r(n)$ & $r(n) + r(r(n))$  \\ 
+  {\tt Alphabet} & $\{0,1\}$  & $\{0,1\}$ \\
+\hline
+\end{tabular} %\caption{Parameters after one iteration} \label{1round}
+ \caption{Parameters after Self-Composition of Inner} \label{table:selfcompose}
+\end{table}
+
+
+
+\begin{claim}\label{dying}
+  For every non-decreasing $f : \mathbb{N} \rightarrow \mathbb{N}$
+  such that $f(n) = o(n)$, the following holds for every $x$.
+\begin{itemize}
+\item $f\left(f\left(x\right)\right) \le f(x)$.
+\item $f\left(f\left(x\right)\right) <  x/k$, for all $k > 0$.
+\end{itemize}
+\end{claim}
+\noindent {\em Proof.} The first part of the claim follows from the
+hypothesis that $f$ is a non-decreasing, sub-linear function. For the
+latter half, suppose that $f\left(f\left(x\right)\right) = x/k$, for
+some constant $k$. This implies $f(x) = O(n)$ and this is a
+contradiction. Thus, the claim holds.\qed
+
+
+
+\subsection*{Modified Composition}\label{modified}
+\begin{enumerate}
+\item We start with the basic ($\rho,\delta$)-assignment tester constructed in Lemma
+  \ref{Tester}. We then tensor the ($\rho,\delta$)-assignment tester to obtain a
+  ($\rho^2,\delta^2$)-tester. As in Lemma \ref{iterate} we perform $\vartheta$
+  sequential repetitions using a ($\epsilon, \gamma$)-sampler, for
+  some constant $\epsilon, \gamma > 0$, in a randomness efficient manner
+  to obtain ($\vartheta \cdot \rho^2, \sqrt{ \delta^2 }$)-assignment tester, denoted
+  by ${\cal V}$. The query complexity $\q(n)$ is $\vartheta \cdot \q^2$,
+  where $\q$ is the number of queries made by the assignment tester in Lemma
+  \ref{Tester}.
+
+\item We now use self-composition to compose ${\cal V}$ with
+  itself. As we have witnessed in Table \ref{table:selfcompose}, this 
+ doubles the error parameters\footnote{Will be established 
+	  via Lemma \ref{robust-composition}}. Thus, we end up with a ($ 2
+  \cdot \vartheta \cdot \rho^2, 2 \cdot
+  \vartheta \cdot \delta^2$)-tester with a
+  query complexity of $\q(\q(n))$, where $n$ is the size of the outer.
+  Set $\vartheta = 5 , \rho = 1/( 8
+  \cdot \vartheta), \delta = 16/100$ to check that we essentially have a (${\cal O}(\rho^2), \delta$)-tester
+  
+\item We then iterate over the first two steps $ \simeq \log n$ times.  It
+  follows that the tester we achieve after this is ($ 1/{\cal
+    O}(\rho^{\log n}), \delta'$)-tester. This is what we would like to achieve
+  as ${\cal O}(\rho^{\log n}) \simeq {\cal O}(1/n^{\Omega(1)})$. The
+  query complexity of our construction decreases over each iteration
+  in $n$. It take a bit of work but it is not hard to show that at the 
+  end of it all, we end up with a tester that only makes a
+  constant number of queries.
+\end{enumerate}
+
+However, all is not well as the above sketch suggests. For one, we
+have designed the basic tester to be utilized as an inner. To be
+eligible for composition as an outer, we need an robust variant of the
+same. We shall use this opportunity to refresh the notion of verifier
+composition. The prover would need to provide an inner-proof
+$\psi_{R}$ for every possible random coin $R$ of the outer PCP. Thus,
+the proof for the composed verifier is $\Psi = \big\{ \psi_{R}\ :\ R \
+\mbox{outer random coins} \big\}$. Thus, if our tester to be eligible
+to be used as an outer, it needs to be robust. Informally, any
+satisfying assignment must be far from an unsatisfying assignment.  We
+now formalize this notion via {\em robust} assignment testers first
+introduced by \cite{DR,BGHSV}.
+
+\begin{definition}[Robust Assignment Testers]\label{RAT}
+  An assignment-tester is called $\rho$-robust if in the soundness
+  case in Definition \ref{AT} of an assignment tester, for every
+  assignment $\tilde{\pi} : Y \rightarrow \Sigma$, the assignment
+  $(\pi \cup \tilde{\pi})|_{\psi_i}$ is $\rho$-far from any satisfying
+  assignment of $\psi_i$ on least $1 - \epsilon$ fraction of $\Psi =
+  \big \{\psi_1, . . . , \psi_R \big\}$.
+\end{definition}
+
+Dinur and Reingold \cite{DR} provide a generic transformation that
+transforms any assignment-tester into a robust one. In particular,
+they prove the Robustization lemma which is very useful in our
+quest. Specifically, we use a slight variant of their result -- one
+that includes completeness error. Let us denote a tester that uses $R$
+random bits, has a completeness error $\rho$, size $S$, makes $\q$
+queries, distance parameter $\delta$, soundness $\epsilon$ and
+robustness parameter $\mu$ by $(R, \rho, S, \q, \delta, \epsilon, \mu)$.
+
+\begin{lemma}[Robustization Lemma, Lemma 3.6 in \cite{DR}]\label{Generic}
+  There exists some $c_1 > 0$ such that given an assignment tester
+  ${\cal A}$ with parameters $(R, \rho, S, \q, \delta, \epsilon)$, we can
+  construct a $\rho$-robust assignment tester ${\cal A}' = \Psi'$ with
+  parameters $\left(R, \rho, c_1 \cdot S, \q, \delta,\epsilon, \mu =
+    \Omega(1/q)\right)$.
+\end{lemma}
+
+\noindent Based on Lemma \ref{Generic}, we can now transform our
+tester obtained from Lemma \ref{Tester} into a robust tester. The key
+parameter for us is the completeness error and this is left untouched
+by this generic robustization. We also recollect the robust
+composition lemma from \cite{DR} which basically establishes that
+robust assignment-testers compose in a modular fashion.
+
+\begin{lemma}[Robust Composition Lemma 3.5 in
+  \cite{DR}]\label{robust-composition}
+  Let ${\cal A}_1$ and ${\cal A}_2$ be two assignment testers with
+  parameters $(R_1, \rho_1, \s_1, \q_1, \delta_1, \epsilon_1)$ and $(R_2,
+  \rho_2, \s_2, \q_2, \delta_2, \epsilon_2)$ respectively. If ${\cal A}_1$
+  is $\mu$-robust with $\mu = \delta_2$ then one can construct an
+  assignment tester ${\cal A}_3$ with parameters $(R_3, \rho_3, \s_3, \q_3,
+  \delta_3, \epsilon_3)$ such that:
+\[
+R_3 = R_1(n) \cdot R_2(\s_1(n)), \ \ \ \s_3(n) = \s_1(\s_2(n)), \ \ \
+\q_3(n) = \q_2(\s_1(n)), \ \ \rho_3 = \rho_1(n) + \rho_2(\s_1(n)) - \rho_1(n) \cdot
+\rho_2(\s_1(n))\\
+\]
+and
+\[
+\epsilon_3 = \epsilon_1(n) + \epsilon_2(\s_1(n)) - \epsilon_1(n) \cdot \epsilon_2(\s_1(n)), \ \ \ \delta_3(n) = \delta_1(n)
+\]
+\end{lemma}
+
+
+\section{Construction of Basic Tester}
+
+We now highlight the iterative construction aimed at constructing
+PCP's with polynomially small completeness error. The construction
+involves {\em three} phases as outlined in Section \ref{modified}.\\
+
+\noindent {\sf Tensoring and Soundness Amplification.} 
+We begin by recalling the tester we obtained after tensoring a
+($\rho, \delta$)-tester followed by $\vartheta$ sequential repetitions in a
+randomness efficient manner via Corollary \ref{iterate}.
+
+\begin{corollary}[Tensoring + Repetitions]
+    For every $\rho > 0, \delta < 1/4$, there is an absolute constant $\vartheta$,  given a
+$(\rho, \delta)$-assignment tester that uses $r_v$ random bits to make $q$ queries, we can construct a ${\cal O}\left(\rho^2
+      \cdot \vartheta , {\delta}\right)$-assignment tester. The new assginment tester 
+uses $r_v \cdot  \vartheta)$ random bits and makes ${\cal O}(\vartheta \cdot q^2)$ queries.
+\end{corollary}
+
+\noindent {\sf Robustization.} In order to compose the tester we have
+built with itself.  It must be robust in the sense of Definition
+\ref{RAT}. So, our approach will be to robustize the tester via Lemma
+\ref{Generic} and then compose it with the tester obtained by
+Corollary \ref{iterate} using Lemma \ref{robust-composition}.
+
+\begin{lemma}[Robust Tester]\label{robustTester}
+  There exists some $\gamma > 0, \delta < 1/4$, such that as
+  ($\rho, \delta$)-tester ${\cal T}$ that uses $r_v$ random bits to make $q$
+  queries to verify a Boolean property $\psi$ can be made a
+  $\mu$-robust assignment tester ${\cal A}$ with parameters
+  $\left(r_v, \rho, \gamma \cdot \s({\cal T}), \q, \delta, \epsilon,
+    \mu = \Omega(\frac{1}{\q})\right)$.
+\end{lemma}
+\noindent {\em Proof.} We invoke Lemma \ref{Generic} on the
+($\rho,\delta$)-tester from Lemma \ref{Tester}. \qed \\ 
+
+\noindent {\sf Self Composition.} We now compose the robust tester
+obtained by Lemma \ref{robustTester} with the tester obtained via
+Corollary \ref{iterate} as its inner.
+
+\begin{lemma}\label{selfcomposed}
+  For every $\rho > 0, \delta < 1/4$, there is some $\epsilon > 0$,
+  the composition of the assignment tester obtained via Corollary \ref{iterate} with
+ itself in a robust way yields an assignment tester with the following 
+parameters (${\cal O}(r_v)$, ${\cal O}(\rho^2)$, $\s(\s(n))$, $\q(\q(n))$, $\delta$, $\epsilon$)-tester.
+\end{lemma}
+\noindent {\em Proof.} The idea is very simple. We start with the basic tester
+($r_v$, $\rho^2$, $\s(n)$, $\q(n)$, $\delta$, $s'$)-tester obtained from Corollary \ref{iterate}. 
+We then invoke Lemma \ref{Generic} on it to obtain its robust cousin 
+$\left(r_v, \rho^2, \gamma \cdot \s(n), \q(n), \delta, \epsilon, \mu =
+  \Omega(1/\q(n))\right)$-tester. We now compose them in an obvious 
+way using Lemma \ref{robust-composition} to claim the result. 
+
+In particular, we begin by setting $\vartheta = 5, \rho = 1/( 8 \cdot \vartheta)$ in Lemma \ref{iterate} to
+obtain an ($1/64 \cdot \vartheta, \delta'$)-tester with $\q$ queries.  Upon
+composition with a robust version of itself we end up with a $\rho = 1/32
+\cdot \vartheta = 1/2 \cdot 1/64 \cdot \vartheta \simeq {\cal O}(\rho^2)$
+and $\delta = \Omega(\frac{1}{\q}) = {\cal O}(1) \simeq \epsilon$\footnote{Since, this is a
+  one-time composition, it is a constant.}. The rest of
+the parameters follow vacuously.\qed 
+
+\section{Iterated Tester}
+
+We are now almost set to iterate over Corollary \ref{iterate}, Lemmas \ref{robustTester} and
+\ref{selfcomposed} to obtain our ends. But before we go any further, we would
+like to introduce a couple of definitions and make a few
+observations about the function ${\q}(n)$. At the
+very outset, we make it clear that in what follows we deal with only
+sub-linear functions. That is, functions whose output is
+small than its input by a {\sf poly}($\cdot$) quantity. Examples 
+of such functions include $\log n$, {\sf
+  poly} $\log n$, $n^\epsilon$, for $\epsilon < 1$.
+
+\begin{definition}[{\tt Repetition}] \label{repetition} We define {\tt
+    Repetition}(${\cal V}$) as an invocation of Corollary \ref{iterate} on
+  ${\cal V}$, followed by robustization using Lemma
+  \ref{robustTester}, and finally self composition using Lemma
+  \ref{robust-composition}. Further, for any $k > 0$ we define {\tt
+    Repetition}$^{k}$(${\cal V}$) recursively as {\tt Repetition}({\tt
+    Repetition}$^{k-1}$(${\cal V}$)).
+\end{definition}
+
+
+\begin{corollary}\label{repeat} For every $\rho > 0$ and $\delta < 1/4$, there is a  $k > 0$ such that
+  {\tt Repetition}(${\cal T}$) yields a ($k \cdot r_v, {\cal O}(\rho^2), {\cal O}(\s^k), \delta$)-tester.
+\end{corollary}
+\noindent {\em Proof.}  Essentially restating Lemma \ref{selfcomposed}
+expect for we use an explicit constant to account for the randomness
+used by in a single invocation of {\tt Repetition}. \qed
+
+\begin{definition}\label{queries}
+  Let ${\cal T}$ be an assignment tester with a query function $\q :
+  \mathbb{N} \rightarrow \mathbb{N}$.  For any $i$, we define $\q^{i}(n)$
+    as the query size of the tester produced after {\tt Repetition}$^i({\cal T})$.
+\end{definition}
+
+\begin{proposition}\label{compute}
+  For every tester ${\cal T}$ with query complexity $\q(n)$, $k > 0$,
+  $\q^{k}(n) = \big[\q^{k-1}\left((\q^{k-1}(n))^2\right)\big]^2$.
+\end{proposition}
+\noindent {\em Proof.}  Follows from the definition of {\tt
+  Repetition}. The query size of the input tester to the {\tt
+  Repetition}$^i$ is $\q^{i-1}$. Recall Corollary \ref{iterate} to conclude
+that the tensor and sequential repetition operations increase the
+query function to $Q = {\cal O}(\q^{i-1}(n))^2$. The robustization
+step does not increase the number of queries. And from Lemma
+\ref{robust-composition}, the self composition step results in a query
+size of $Q(Q(n))$, which is
+$\big[\q^{k-1}\left((\q^{k-1}(n))^2\right)\big]^2$. \qed
+ 
+\begin{lemma}
+  The sequence ${\cal Q}_{i \in \mathbb{N}} = \{\q^{i}(n)\}$ is well
+  behaved in the sense that given $\q^k$, one can compute $\q^{k-1}$
+  and $\q^{k+1}$ upto constant factors.
+\end{lemma}
+\noindent {\em Proof.} In order to be able to compute $\q^{k-1}$ we
+would need uncompute the effect of the $k$-th {\tt Repetition} and we
+are perfectly capable to do $\grave{a}$ la Proposition \ref{compute}. The
+argument for computing $\q^{k+1}$ follows arguments from Proposition
+\ref{compute}. \qed
+
+
+\begin{corollary}[Smoothness Property]\label{smooth}
+  The sequence ${\cal Q}_{i \in \mathbb{N}} = \{\q^{i}(n)\}$ is smooth
+  in the following sense. 
+\[
+        \q^{k} = \Theta(f) \implies \q^{k-1} = \Theta(\tilde{f}) \quad \mbox{and} \quad \q^{k+1} = \Theta(\hat{f})
+\]
+Moreover, both $\tilde{f}$ and $\hat{f}$ are sub-linear in their input.
+\end{corollary}
+%\noindent {\em Proof.} .  \qed
+
+
+\begin{definition}[${\cal Q} = \Upsilon(f)$]
+  For any $f : \mathbb{N} \rightarrow \mathbb{N}$ and any ${\cal Q}_{i
+    \in \mathbb{N}} = \{\q^{i}(n)\}$, we say ${\cal Q} = \Upsilon(f)$
+  if there is a constant $C$, such that $\q^{i}(n) = \Theta(f^i(n))$
+  for every $i > C$, where $f^i(n)$ is the function obtained by
+  composing $f$ with itself for $i$ times.
+\end{definition}
+
+
+\begin{lemma}\label{qdecay}
+  The sequence ${\cal Q}_{i \in \mathbb{N}} = \{\q^{i}(n)\}$ decreases
+  faster than any function in $n$. In other words, there is no $f$
+  such ${\cal Q} = \Upsilon(f)$.
+\end{lemma}
+\noindent {\em Proof.} We give a proof by contradiction. Suppose there
+is a function $f$ such that ${\cal Q} = \Upsilon(f)$. Thus for every
+$i > C$, $\q^{i}(n) = \Theta(f^i(n))$. Since, every element in ${\cal
+  Q}$ can be used to good effect in computing its predecessor, we can
+go backwards until the point where we have reached the start of the
+sequence or $\q^j$ is no longer sub-linear. In the former, we arrive
+at a contradiction as the initial tester in the sequence had a query
+complexity independent of $n$ or a constant number of queries. In the
+latter case, we contradict the smoothness property of Corollary
+\ref{smooth} as $\q^j = \Theta({f})$ implies the existence
+of $\q^{j-1} = \Theta(\hat{f})$. \qed
+
+\begin{proposition}\label{constant}
+  ${\cal Q}_{i \in \mathbb{N}} = \{\q^{i}(n)\}$ is independent of
+  $n$. In other words, any $\q^{i}(n) = {\cal O}(1)$.
+\end{proposition}
+\noindent {\em Proof.} It follows from Lemma \ref{qdecay} that the
+sequence ${\cal Q}$ is not bounded from below by any $f(n)$. Thus,
+${\cal Q}$ is independent of $n$. \qed
+
+\begin{theorem}\label{iterateInner}
+  For every $k > 0, \rho, \delta < 1/4$, there exists $m = k(\cdot)$ and
+  constants $\q', \epsilon > 0$, such that {\tt
+    Repetition}$^m$($r_v, \rho, \s, \q, \delta$)-assignment tester yields a ($r_v
+  \cdot \log k, \rho^k, \s^k, \q', \delta, \epsilon$)-tester. Also, the newly constructed assignment
+ tester performs only linear tests.
+\end{theorem}
+\noindent {\em Proof.} Recall that even though sequential repetition,
+self composition increase the size, the tensoring step dominates the
+rest of them asymptotically. Since in this study, we primarily deal
+with asymptotics, we can focus on the blow-up due to
+tensoring. Repeated tensoring essentially squares the size of the
+input instance. It is easy to verify that the sequence generated is
+$\{2^{2^{i-1}}\}_{i}$.
+
+Corollary \ref{repeat} gives the parameters after a single invocation
+of {\tt Repetition}. To establish the Theorem would essentially
+require us to export each parameter across each invocation of {\tt
+  Repetition}. We invoke it with $m = \log \log k$. We now analyze
+and argue the parameters of the tester.
+\begin{itemize}
+
+\item {\em Randomness:} As highlighted in the prequel, the randomness
+  used is asympotically dominated by the tensoring operation. Thus, we
+  would square the randomness used at every iteration. Hence if the
+  input tester uses $r_v$ bits, after $m$ iterations the randomness
+  blows up to $r_v \cdot 2^{2^{m}} \simeq r_v \cdot k$.
+
+\item {\em Completeness:} Again, we square the completeness error in
+  each iteration, the error falls doubly exponential in $m$, which is
+  {\cal O}($k$). Hence, the completeness error at the end of $m$
+  iterations is ${\cal O}(\rho^k)$.
+
+\item {\em Query Size:} We recall Proposition \ref{constant} to
+  conclude that the query $\q(n)$ is independent of $n$ and thus, we
+  maintain a constant query size after each invocation.
+
+\item{\em Soundness:} Say that {\tt Repetition}$^m$(($r_v, \rho, \s, \q, \delta$)-tester) is given access 
+to a purported proof $\Pi$,  we need to show that the if the proof $\Pi_{\sigma}$ (denotes
+ the projection of $\Pi$ on the variables of $\psi$) is $\delta'$-far to a satisfying proof of 
+the Boolean predicate, we reject with probability at least $\Omega(\delta)$. We show this 
+property holds after each iteration and hence, the newly constructed assignment tester via this 
+process always has the soundness condition. We begin by defining the projection 
+of a proof on $\sigma$.  We denote by $\Pi_\sigma$ the assignment which $\Pi$ makes to the variables in
+$\sigma$. We begin by recalling Observation \ref{invariant}, which states that the distance of assignment to 
+$\sigma$ is invariant to tensoring of proof. In fact, the same is vacously true of sequential repetition
+as it does not modify the proof. We are now ready to establish the soundness.
+
+The approach is simple. We give a proof by induction on the number of iterations. The assignment 
+tester produced after the first iterate is sound by Corollary \ref{iterate}. Assume that the assignment 
+tester produced after $i$-th iterations is sound. We now show that the assignment tester produced after ($i+1$)-th iteration is also sound. 
+Since, the assignment tester at the $i$-th level has the soundness property, it follows 
+from Corollary \ref{iterate} that the soundness holds even after $(i+1)$-th iteration. Thus, it is true
+that the output of {\tt Repetition}$^m$(($r_v, \rho, \s, \q, \delta$)-tester)  is sound.
+
+
+
+\item {\em Distance Parameter:} In our construction, this is same as
+  the soundness.
+\end{itemize} 
+\noindent The linearity of the tests follows from the observation that
+that the basic steps of this operation including tensoring, sequential
+repetition, self composition preserve linearity.  \qed
+
+
+\section{Final Composition}
+
+\begin{theorem}\label{constantSoundness}
+  For every $n$ and $\alpha > 0$ and some $\epsilon$,
+\[
+3SAT \in PCP_{1 - {n^{\frac{\alpha'}{\alpha' + 1}}}, {\epsilon}} \big[ \left( 1 + \alpha \right) \cdot \log n, {\cal O}(1) \big ]_{\{0,1\}}
+\]
+Moreover, verifier's test are linear, and also have the projection
+property.
+\end{theorem}
+\noindent {\em Proof.}  We invoke Theorem
+\ref{constantSoundness} to construct a $(1/ n^\alpha,
+  \epsilon)$ PCP. We then compose the inner with the
+Label-Cover instance in an obvious way. We analyze the parameters of
+the newly composed verifier.
+
+\begin{itemize}
+\item Completeness: Since the Label-Cover has perfect completeness,
+  the error is solely contributed by the inner. Invoking Theorem
+  \ref{iterateInner}, we conclude that the completeness is $1 - n^{\frac{-\alpha'}{\alpha' + 1}}$.
+
+\item Soundness: The inner and the outer each contribute $1/\epsilon$
+  to the error. Hence, the overall soundness is $1/{\cal
+    O}\left(\epsilon\right)$.
+
+\item Query Size: This is inherited from the query size of the
+  inner. Since, we use the inner obtained viaTheorem \ref{iterateInner}, the
+  inner makes ${\cal O}(1)$ queries.
+
+\item Alphabet: Again, follows from Theorem \ref{iterateInner} that alphabet
+  is $\{0,1\}$.
+
+  \item Randomness: The randomness of the composed verifier is the sum
+    total of the randomness used by inner and that used by the
+    outer. In our case, it follows from Theorem \ref{iterateInner} and Lemma
+    \ref{lowlc} that the inner uses $\log n \cdot \alpha'$ random bits and the outer uses $\log n \cdot \left(1
+      +o(1)\right)$. So, the total number of random bits is $\alpha' \cdot \log n + \left(1 +
+      o\left(1\right)\right) \cdot \log n \ \ \simeq \ \ \left(1 +
+      \alpha + o(1)\right) \cdot \log n$.
+\end{itemize}
+\qed
+
+
+
+\subsection{Soundness Amplification}
+
+The tester obtained by Theorem \ref{constantSoundness} has a constant
+soundness, for some arbitrary constant. We now amplify the soundness
+of the tester whilst losing modest factors in the completeness.
+Again, we would like to amplify the soundness whilst retaining the
+good properties which are helpful in making the composition modular
+even possibly at the expense of a non-binary alphabet. In fact, to
+achieve non-constant soundness we would need larger alphabet. To this
+end, we shall use Locally Decode and Reject Codes (Definition \ref{def:LDRC} of Moshkovitz and
+Raz \cite{MR08}. To amplify the soundness, we use Theorem \ref{query}
+on the tester obtained from Theorem \ref{constantSoundness}. The
+construction follows.
+
+
+\begin{theorem}[Linear PCP with Low Error]\label{main} 
+For every $\alpha , \epsilon > 0$
+\[
+  3SAT \in PCP_{{1 - {n^{-\frac{\alpha'} {1 + \alpha'}}}}, \epsilon } \big[ (1 + o(1)) \cdot \log n,  2 \big ]_{\{0,1\}^{{\sf poly}(\frac{1}{\epsilon})}}
+\]
+
+\end{theorem}
+\noindent {\em Proof.} Follows by invoking Theorem \ref{query} on the
+tester obtained in Theorem \ref{constantSoundness}. We 
+use the $( \q, \epsilon)$-construction algorithm for query
+reduction and soundness amplification, where $\q$ is constant obtained
+from Theorem \ref{constantSoundness}. We now analyze the parameters
+of the PCP.
+\begin{itemize}
+
+\item {\em Completeness:} The completeness error of the PCP
+  obtained in Thereom \ref{constantSoundness} is $n^\alpha$. Theorem \ref{query}
+  introduces an error which is proportional to the soundness error of
+  the PCP obtained by applying it. In fact, Theorem \ref{query} is
+  essentially a parallel-repetition theorem in the low-error regime,
+  albeit with a much worse alphabet tradeoff. Thus, the completeness
+  error is that product of $n^\alpha \cdot \epsilon$. In other words,
+  the error is not more than $n^{\alpha} \cdot \epsilon$, choose $ n^\alpha =
+  \omega(\epsilon')$ to get the parameters we want.
+
+\item {\em Soundness:} It follows from Theorem \ref{query} that the
+  soundness of the new construction is $\epsilon$.
+
+\item {\em Alphabet:} We inherit the alphabet of Theorem \ref{query},
+  which happens to be $\{0,1\}^{{\sf poly}(\frac{1}{\epsilon})}$.
+For poly alphabet, choose ${{\sf poly}(\frac{1}{\epsilon})} = \log n$ to get the 
+necessary parameters.
+
+\item {\em Randomness:} Theorem \ref{query} blows up the randomness of
+  the input tester to ${1 + o(1)} \cdot {\sf R}$, where ${\sf R}$ is
+  randomness of the PCP obtained by Theorem \ref{constantSoundness}. For the
+  parameters that we have chosen, it is $(1 + o(1))  \cdot (1 + \alpha + o(1)) \cdot \log n   
+\simeq  \log n \cdot (1 +  \alpha + o(1))$.
+\end{itemize}
+\qed
+
+\section{New Hardness Results}
+\begin{corollary}[{\sc Label-Cover}] \label{newcover}
+  For every $n$, $\alpha$ and some $\beta > 0$ the following
+  holds. Solving an instance of ${\sc SAT}$ of size $n$ can be reduced
+  to distinguishing {\sc Label-Cover} instances 
+  between the following two cases.
+\begin{itemize}
+\item {\sf Yes:} There is a labeling that satisfies at least $(1 -
+		\frac{1}{n^{\alpha'}})$-fraction of the edges.
+\item {\sf No:} Any labeling satisfies at most $(\frac{1}{(\log n)^\beta})$-fraction of the edges.
+\end{itemize}
+The size of the {\sc Label-Cover} instance is $n^{1 + \alpha}$ and every projection is linear in nature.
+\end{corollary}
+
+\begin{corollary}[{\sc 3Lin Hardness}] \label{3linpoly} For every
+  $\alpha$, there is some $\beta > 0$, the following holds. Given a
+  {\sc 3Lin} instance $\Phi$ of size $n$, it is {\sf NP}-hard to
+  distinguish between the following two cases.
+\begin{itemize}
+\item {\sf Yes:} There is an assignment which satisfies $(1 -
+		\frac{1}{n^{\alpha'}})$-fraction of $\Phi$.
+\item {\sf No:} Every assignment can satisfy at most $(\frac{1}{2} +
+    \frac{1}{(\log n)^{\beta}})$-fraction of $\Phi$.
+\end{itemize}
+\end{corollary}
+\noindent {\em Proof.} Plugging in the {\sc Label-Cover} obtained from
+Corollary \ref{newcover} instead of the one obtained by Corollary
+\ref{oldcover} in Theorem \ref{3lin} by setting 
+$\epsilon = \frac{1}{n^\alpha}$, and $\delta = \frac{1}{(\log
+n)^{\sqrt[3]{\beta}}}$.  Completeness follows trivially from Theorem
+\ref{khot}. Since $S < \delta^2$, the soundness of $V_{lin}$ is $\frac{1}{2} +
+\frac{1}{(\log n)^{\beta'}}$. This completes the proof.\qed
+
+\begin{corollary}[{\sc Min-3Lin-Deletion Hardness}] \label{3delpoly}
+  For every $\alpha$ and some $\beta > 0$ the following holds. Given a
+  {\sc Max-3Lin-Deletion} ${\cal D}$ instance of size $n$ it is {\sf
+    NP}-hard to distinguish between the following two cases.
+\begin{itemize}
+\item {\sf Yes:} There is a $(\frac{1}{n^{\alpha'}})$-fraction of
+  equations whose removal makes ${\cal D}$ satisfiable.
+\item {\sf No:} At least $\beta$-fraction of the equations in ${\cal
+    D}$ need to be removed from it to make it satisfiable.
+\end{itemize}
+\end{corollary}
+\noindent {\em Proof.} An alternate view of Corollary \ref{3linpoly}. \qed \\
+
+\begin{corollary}[{\sc 3Sat Hardness}]
+  For every $\alpha > 0$ and some $\beta > 0$, given a {\sc 3Sat}
+  instance $\Upsilon$ of size $n$ it is {\sf NP}-hard to distinguish
+  between the following two cases.
+\begin{itemize}
+\item {\sf Yes:} There is an assignment which satisfies $(1 -
+    \frac{1}{n^{\alpha'}})$-fraction of $\Upsilon$.
+\item {\sf No:} Every assignment can satisfy at most $(\frac{7}{8} +
+    \frac{1}{(\log n)^{\beta}})$-fraction of $\Upsilon$.
+\end{itemize}
+\end{corollary}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

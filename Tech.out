@@ -1,0 +1,27 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}
+\BOOKMARK [2][-]{subsection.1.1}{Application to The Threshold Behavior of Approximation}{section.1}
+\BOOKMARK [2][-]{subsection.1.2}{Application to Min-3Lin-Deletion and Nearest-Codeword-Problem}{section.1}
+\BOOKMARK [2][-]{subsection.1.3}{The Completeness Amplification of Khot and Ponnuswami}{section.1}
+\BOOKMARK [2][-]{subsection.1.4}{Our Completeness Amplification}{section.1}
+\BOOKMARK [1][-]{section.2}{Preliminaries}{}
+\BOOKMARK [2][-]{subsection.2.1}{Hamming Weight}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Linear Systems of Equations}{section.2}
+\BOOKMARK [1][-]{section.3}{Tensoring}{}
+\BOOKMARK [2][-]{subsection.3.1}{Decoding Tensored Systems}{section.3}
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Folding}{subsection.3.1}
+\BOOKMARK [3][-]{subsubsection.3.1.2}{Observations}{subsection.3.1}
+\BOOKMARK [3][-]{subsubsection.3.1.3}{Main Lemma}{subsection.3.1}
+\BOOKMARK [1][-]{section.4}{Outline of the Construction}{}
+\BOOKMARK [1][-]{section.5}{Assignment Testers}{}
+\BOOKMARK [1][-]{section.6}{Completeness Amplification}{}
+\BOOKMARK [2][-]{subsection.6.1}{Soundness Amplification Perserving Linearity}{section.6}
+\BOOKMARK [1][-]{section.7}{Final Brick: Composition}{}
+\BOOKMARK [1][-]{section.8}{Towards Reducing Queries, Soundness Amplification}{}
+\BOOKMARK [1][-]{section.9}{Hardness Results}{}
+\BOOKMARK [2][-]{subsection.9.1}{The PCP verifier}{section.9}
+\BOOKMARK [2][-]{subsection.9.2}{Inapproximability Results}{section.9}
+\BOOKMARK [1][-]{section.10}{Polynomially Small Completeness Error}{}
+\BOOKMARK [2][-]{subsection.10.1}{Construction of Tester}{section.10}
+\BOOKMARK [2][-]{subsection.10.2}{Final Composition}{section.10}
+\BOOKMARK [1][-]{section.11}{Nearest Codeword Problem}{}
+\BOOKMARK [1][-]{section.12}{Concluding Remarks}{}

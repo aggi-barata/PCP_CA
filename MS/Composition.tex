@@ -1,0 +1,387 @@
+
+\chapter{Final Brick: Composition}\label{section:composition}
+In this section, we use the assignment tester constructed in Section \ref{section:complete}
+to construct a PCP with linear predicate and logarithmically small completeness error and a constant
+soundness. However, the query size will be also poly-logarithmic. We shall deal with query reduction
+in Section \ref{section:sound}. For now, we shall restrict our attention to compose our assignment
+tester with low completeness error with a PCP to construct linear PCPs with sub-constant
+completeness error. The overall strategy will be to start with an outer PCP which has
+perfect completeness and is also robust. The notion of robust
+composition PCP's was pioneered by \cite{BGHSV,DR}. It involves
+two steps:
+
+\begin{itemize}
+\item {\sf Robustization:} The key idea is to have a stronger
+  soundness condition. In a robust PCP not only that the verifier must
+  reject any invalid proof with a good probability, also the answers
+  to the queries of PCP verifier are sufficiently far from any
+  satisfying answer.  Robust PCP's can be constructed from the extant
+  PCP literature. We highlight two constructions.
+\begin{enumerate}
+\item {\em Robust PCP} $\equiv$ {\sc Label-Cover}.  The formulation of
+  Robust PCP's might have arrived late, but they have been
+  ever-existent and ubiquitous in the PCP world disguised as {\sc
+    Label-Cover} (ref. Section \ref{label-cover} to know more about
+  {\sc Label-Cover}).  An interested reader might refer Lemma $2.5$,
+  page $11$ of \cite{DH} to understand this equivalence.
+
+
+\item {\em Via Error Correcting Codes.} Dinur and Reingold \cite{DR}
+  give a generic transformation of any PCP into a robust one. It
+  roughly involves encoding the alphabet with an error correcting code
+  $E: \Sigma \rightarrow \{0,1\}^l$. The distance required from the
+  code is determined by the robustness parameter $\rho$. Also, if one
+  would additional require that the size of the reduction is
+  quasi-linear, then they must use an error correcting code $E$ to
+  with a linear rate.
+\end{enumerate}
+
+\item {\sf Composition:} We now run the assignment tester given by
+  Lemma \ref{Camplify} (with required parameters) on every test $c :
+  \Sigma^k \rightarrow \{0,1\}$ of the aforementioned robust PCP
+  verifier. Notice that $C$ can be transformed into a Boolean
+  constraint over Boolean variables. To this end, replace each
+  variable $v$ by a set of $l$ Boolean variables denoted by $[v]$ and
+  the circuit for $c$ by Boolean gates (essentially its binary
+  encoding).  So, we would end up with a new constraint $\tilde{c}$
+  over new variables $[x_1] \cup [x_2] \ldots [x_s]$.  $c$ would be
+  satisfied iff the assignment for $[x_1] \cup [x_2] \ldots [x_s]$ is
+  a satisfying assignment for $c$. After carrying out the above
+  transformation, we shall have a system of constraints
+  $\{\tilde{c}_i\}_{i \in [n]}$.  Thus, it is well defined
+  to run the tester on ${c}$.
+
+  After composing them with our tester, we will end up with
+  $\left\{\widehat{c}_i\right\}$ over the old variables $[x_1] \cup
+  [x_2] \ldots [x_s]$ and new auxiliary variables $Y$.  Firstly, it is
+  easy to check that the size remains polynomial in $n$
+  \footnote{Follows from the fact that the size of every inner is
+    ${\cal O}(\log n)^\beta$, for some $\beta < 1$ and there are at
+    most ${\cal O}(n^{1 + o(1)})$ constraints to compose.}. The outer
+  will be a Robust PCP verifier instance. We start with a verifier
+  possessing perfect completeness \footnote{In other words, no error
+    in completeness.}  and low soundness error. Hence, the error
+  parameters of the ``new'' composed verifier are solely determined by
+  the errors of the assignment tester $\Pi$. This completes the
+  outline of the composition.
+\end{itemize}
+
+\section{Robust Composition}
+We now state the robust outer that we intend to use for our
+composition. We use the low error {\sc Label-Cover} (Definition \ref{label}) instance generated
+by Moshkovitz and Raz \cite{MR08}. For the sake of completeness, we
+state it here.
+
+\begin{theorem}[Low-Error {\sc Label-Cover}]\label{lowlc}
+  For every $n$, and every $\epsilon > 0$ (that can be any function of
+  $n$) the following holds. Solving {\sc 3SAT} on inputs on size $n$
+  can be reduced to distinguishing between the case that a {\sc
+    Label-Cover} instance of size $n^{1 + o(1)} \cdot {\sf
+    poly}(\frac{1}{\epsilon})$ and parameters $\log
+  |\Sigma_A| \le {\sf poly(\frac{1}{\epsilon})}$ and
+  $|\Sigma_B| \le |\Sigma_A|$ is completely satisfiable and the case
+  that at most $\epsilon$ fraction of the edges are satisfiable.
+\end{theorem}
+
+\begin{table}
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\ &  {\sc Robust Outer} & {\sc Linear Tester} & {\sc Final PCP} & {\sc Amplification}\\
+\hline
+{\tt Soundness} & $\epsilon$  & $\epsilon$ &  $2 \cdot \epsilon$ & $1/{\cal O}((\log n)^\beta)$ \\
+{\tt Completeness} & $1$  &  $1 - 1/(\log n)^\alpha$ & $1 - 1/(\log n)^\alpha$ & $1 - 1/{\cal O}(\log n)^{\alpha'}$ \\
+{\tt Queries}  &  ${\cal O}(1)$ & $(\log n)^\alpha$ & $(\log n)^\alpha$ & $2$ \\
+{\tt Alphabet} & ${\cal O}{(1)}$  & $\{0,1\}$  & $\{0,1\}$ & $\{0,1\}^{\log n}$	 \\
+{\tt Size} &  $n$  & $(\log n)^\beta$ & $n \cdot (\log n)^{\alpha}$  & $n \cdot (\log n)^{{\cal O} (\alpha)}$   \\
+\hline
+\end{tabular} \caption{Various Parameters during Composition} \label{table:compose}
+\end{table}
+
+\paragraph {Notations.}  We denote by $PCP_{c,s}\left[r, q\right]_\Sigma$ the class of
+languages that have a PCP verifier with completeness $c$, soundness
+$s$, randomness $r$ and makes $q$ queries to the purported proof over
+an alphabet $\Sigma$. It is often useful to imagine all the parameters as a function of $n$.
+
+\begin{theorem} \label{composedPCP}
+For every $\alpha \le 1$ and $\epsilon > 0$, 
+\[
+		3SAT \in PCP_{{1 - \frac{1}{\left(\log n\right)^{\alpha'}}}, \epsilon } \big[ \left(1 + o\left(1\right) \right) \cdot \log n,  (\log n)^{\alpha'} \big ]_{\{0,1\}^{(\log n)^\alpha}}
+\]
+Moreover, the verifier performs linear tests which have the
+projection property.
+\end{theorem}
+\noindent {\em Proof.} We now make the aforementioned construction
+explicit.  We start with a randomness efficient robust PCP with
+perfect completeness and sub-constant soundness error. To obtain a
+robust PCP, we use its equivalence to {\sc Label-Cover}. In particular, we
+start with a {\sc Label-Cover} generated by Theorem \ref{lowlc} for some
+constant $\epsilon > 0$. In particular, we use a Robust PCP with robustness 
+parameter set to some constant $\epsilon'$. Now we invoke
+Lemma \ref{Camplify} to construct a $(1/(\log n)^\alpha, \epsilon)$-tester 
+($\alpha$ will be fixed later). We then compose the inner with the {\sc Label-Cover} instance in an
+obvious way. We summarize the parameters in Table \ref{table:compose}. 
+We analyze the parameters of the newly composed verifier.
+
+\begin{itemize}
+\item Completeness: Since the Label-Cover has perfect completeness,
+  the error is solely contributed by the inner. Invoking Lemma
+  \ref{Camplify}, we conclude that the completeness is $1 -
+  \frac{1}{(\log n)^{\alpha'}}$.
+
+\item Soundness: The inner and the outer each contribute $\epsilon$ to the error. Hence, the overall soundness is
+  $2 \cdot \epsilon $.
+
+\item Query Size: This is inherited from the query size of the
+  inner. Since, we use Lemma \ref{Camplify} to obtain it, the
+  inner makes $(\log n)^{\alpha'}$ queries.
+
+\item Alphabet: Again, follows from Lemma \ref{Camplify} that alphabet
+  is $\{0,1\}$. Hence, the alphabet
+used by the proof is $\{0,1\}$.
+
+\item Randomness: The randomness of the composed verifier is the
+  sum total of the randomness used by inner and that used by the
+  outer. In our case, it follows from Theorem \ref{lowlc} and Lemma
+  \ref{Camplify} that the inner uses $\log \log n \cdot \alpha' \cdot
+  {\cal O}(r_v + \log \vartheta)$ random bits and the outer uses $\log
+  n \cdot (1 +o(1))$. So, the total number of random bits
+  is $(1 + o(1)) + \log n + {\cal O}(1) \cdot \log \log n \ \ \simeq \ \ (1 +
+    o(1)) \cdot \log n$.
+\end{itemize}
+\qed
+
+
+
+\section{Towards Reducing Queries, Soundness Amplification} \label{section:sound}
+
+One parameter we have not paid attention during the completeness
+amplification of the tester is the query size. As was the case with
+every other parameter, we also square the number of the queries the
+input tester makes. In general, the number of queries the tester makes
+is ${\cal O}(1/\rho)$. To establish PCPs for {\sf NP}, one must be frugal
+when it comes to queries. So, we must apply some technique to keep
+reduce the queries. The obvious approach to break into {\sc 3-Lin}
+does not work as we would lose huge factors ($1/\rho$) in soundness. At
+which point, it will be hard to keep the randomness used by the
+verifier to logarithmic amount.  Thus, we use Bipartite {\em Locally
+  Decode/Reject Codes} (LDRC) to reduce the number of queries in the
+PCP (from the perspective of {\sc GAP-LIN}, we reduce the size of
+equation).  We begin by defining Biparitite LDRC.
+
+\begin{definition}[Biparitite LDRC \cite{MR08}]\label{def:LDRC}
+Consider a list of k-tuples
+\[
+\langle i_{1,1}, . . . , i_{1,k}\rangle, . . . , \langle i_{N,1}, . . . , i_{N,k} \rangle \in [n]^k
+\]
+A Bipartite LDRC for the k-tuples is ${\cal G} = \langle G =
+(A,B,E),A,B,\{\pi_{e}\}_e \in E, \{\tau_e\}_{e \in E},\{\rho_e\}_{e
+  \in E}\rangle$, where ${\cal G}' = \langle G = (A,B,E),A,B,
+\{\pi_e\}_{e \in E} \rangle$ is an instance of {\sf Label-Cover}, and
+  every edge $e \in E$ carries a $k$-tuple $\tau_e$ from the list and
+  an evaluation function $\rho_e : \Sigma_A \rightarrow \{0, 1\}^k$.
+  For each $j \in [N]$, the tuple $\langle i_{j,1}, . . . ,
+  i_{j,k}\rangle$ appears on the same number of edges.
+
+  Given a labeling to the vertices of the graph, i.e., functions $C_A
+  : A \rightarrow \Sigma_A$ and $C_B : B \rightarrow \Sigma_B$, an
+  edge $e = (a, b) \in E$ is said to be ``satisfied'' if it is
+  satisfied in ${\cal G}'$. For a message $x \in \{0, 1\}^n$, the edge
+  e is said to ``decode'' $x$ if $\rho_e(C_A(a)) = \langle x_{i,1} ,
+  . . . , x_{i,k}\rangle$ where $\tau_e = \langle i_1, . . . ,
+  i_k\rangle$ is the tuple associated with $e$. 
+
+ Let $0 < \delta_{min} < 1$. Let $l_{max} : (0, 1) \rightarrow
+ {\mathbb R}^+$ be a decreasing function. We say that the LDRC is a
+ $(\delta_{min}, l_{max})$-bipartite LDRC if it satisfies the following
+ conditions: 
+ \begin{enumerate}
+ \item{\bf Completeness:} For every $x \in \{0, 1\}^n$, one can
+   efficiently compute assignments $C_A : A \rightarrow \Sigma_A$ and
+   $C_B : B \rightarrow \Sigma_B$, such that all edges $e \in E$ are
+   satisfied and decode $x$. 
+
+  \item {\bf Soundness:} For every $C_B : B \rightarrow \Sigma_B$, for
+    every real $\delta$ such that $\delta_{min} < 1$, there exist $l
+    \le l_{max}(\delta)$ messages $x_1, . . . , x_l \in \{0, 1\}^n$,
+    such that the following holds for any $C_A : A \rightarrow
+    \Sigma_A:$ when picking uniformly at random an edge $e \in E$, the
+    probability that $e$ is satisfied but does not decode any one of
+    $x_1, . . . , x_l$, is at most ${\cal O(\delta)}$.
+\end{enumerate}
+\end{definition}
+
+We now present a construction of an almost-linear size bipartite LDRCs due to Moshkovitz and Raz \cite{MR08}.
+\begin{definition}[Construction Algorithm, Theorem 15 in \cite{MR08}]\label{cons}
+  A $(k_{max}, \delta_{min})$-construction algorithm for bipartite
+  LDRCs with parameters $\langle size, block_A, block_B \rangle$ is an
+  efficient algorithm that given a collection of $k$-tuples, where $k
+  \le k_{max}$, outputs a $(\delta_{min}, l_{max})$-bipartite LDRC for
+  the tuples, where $l_{max}(\delta) \le \delta^{−O(1)}$. The size of
+  the output is $size$, the alphabet size of the $A$ vertices is
+  $2^{block_A}$ and the alphabet size of the $B$ vertices is
+  $2^{block_B}$.
+\end{definition}
+
+\begin{theorem}[Query Reduction, Theorem 16 in \cite{MR08}] \label{query}
+If there is a $(q, \epsilon)$-construction algorithm for bipartite
+LDRCs with parameters $\langle size \le (N + n) \cdot n^{o(1)},
+block_A, block_B \rangle$, then for some $\epsilon_0 \ge \epsilon^{O(1)}$,
+
+\[
+PCP_{1, \epsilon_0}\left[\left(1 + o\left(1\right)\right) \cdot \log
+  n, q\right] \subseteq PCP_{1,O(\epsilon)}\left[\left(1 +
+  o\left(1\right)\right) \cdot \log n, 2\right]_{\{0,1\}^{block_A}}
+\]
+Moreover, the transformation yields linear projection tests if the
+original instance had linear constraints.
+\end{theorem}
+
+Though, the claim on linearity is not explicitly stated in
+\cite{MR08}, it does hold. The key observation in establishing this
+invariant is that locally decode/reject codes are based on linear
+codes and are themselves linear by definition. One advantage of using
+LDRC for query reduction is that the composed verifier has all the
+qualities of a tester and thus, will be for ready for composition with
+another verifier in a seamless manner.
+
+
+%\begin{lemma}[Query Reduction] \label{Query_Reduction}
+%The number of variables in the system ${\sf Tensor ({\cal L})}$
+%can reduced to those in ${\cal L}$ at no loss in completeness and a
+%small an additive loss in soundness.
+%\end{lemma} 
+%\noindent{\em Proof.}  Follows from Theorem \ref{query} for
+	%appropriate parameters. \qed
+
+
+\begin{theorem}[Linear PCP with Low Error]\label{main} 
+For some $\alpha, \beta > 0$
+\[
+  3SAT \in PCP_{1 - \frac{1}{(\log n)^{\alpha'}}, \frac{1}{(\log n)^\beta} } \big[ (1 + o(1) ) \cdot \log n,  2 \big ]_{\{0,1\}^{\log n}}
+\]
+
+\end{theorem}
+\noindent {\em Proof.} Follows by invoking Theorem \ref{query} on the
+tester obtained in Theorem \ref{composedPCP}. We  set $\epsilon =
+\frac{1}{(\log n)^\beta} $ and then use the $((\log n)^\alpha, \epsilon)$-construction algorithm for query
+reduction and soundness amplification. We now analyze the parameters
+of the PCP.
+\begin{itemize}
+
+\item {\em Completeness:} The completeness error of the PCP
+  obtained in Thereom \ref{composedPCP} is $(\log n)^\alpha$. Theorem \ref{query}
+  introduces an error which is proportional to the soundness error of
+  the PCP obtained by applying it. In fact, Theorem \ref{query} is
+  essentially a parallel-repetition theorem in the low-error regime,
+  albeit with a much worse alphabet tradeoff. Thus, the completeness
+  error is that product of $(\log n)^\alpha \cdot \epsilon$. In other words,
+  the error is not more than $(\log n)^{\alpha - \epsilon'}$, choose $(\log n)^\alpha =
+  \omega(\epsilon')$ to get the parameters we want.
+
+\item {\em Soundness:} It follows from Theorem \ref{query} that the
+  soundness of the new construction is $\epsilon$.
+
+\item {\em Alphabet:} We inherit the alphabet of Theorem \ref{query},
+  which happens to be $\{0,1\}^{(\log n)^\alpha \cdot 
+{\sf poly}(\frac{1}{\epsilon})}$, where {\sf poly}($\cdot$) is
+  implicit in Definition \ref{cons}. We choose  ${(\log n)^\alpha \cdot 
+{\sf poly}(\frac{1}{\epsilon})} = \log n$ to get the necessary parameters.
+
+\item {\em Randomness:} Theorem \ref{query} blows up the randomness of
+  the input tester to ${1 + o(1)} \cdot {\sf R}$, where ${\sf R}$ is
+  randomness of the PCP obtained by Theorem \ref{composedPCP}. For the
+  parameters that we have chosen, it is $(1 + o(1)) \cdot \log n \cdot (1 + o(1))  
+\simeq \log n \cdot (1 + o(1))$.
+\end{itemize}
+\qed
+
+\section{Hardness of Label-Cover}\label{label-cover} 
+PCP's with the 
+projection property can also formulated a certain CSP called the {\sc
+  Label-cover} problem. An instance of a {\sc Label-cover} is a
+bi-partite graph whose edges are between questions of first prover and
+those of the second prover. For every edge, there is an associated
+projection that uniquely identifies the label of second vertex given
+the label of a vertex from the first set. The goal is find a labelling
+that maximizes the number of satisfied edges.  The following
+formalizes the notion we have been talking in the prequel.
+
+\begin{definition}[{\sc Label-cover}]\label{label} An instance of {\sc Label-cover}
+  contains a regular bi-partite multi-graph $G = (A, B, E)$ and two
+  finite sets $\Sigma_A$ and $\Sigma_B$, where $|\Sigma_A| \ge
+  |\Sigma_B|$.  Every vertex in $A$ is supposed to get a label from
+  $\Sigma_A$, and every vertex in $B$ is supposed to get a label from
+  $\Sigma_B$. For each edge $e \in E$ there is a projection $\pi_e:
+  \Sigma_A \rightarrow \Sigma_B$ which is a partial function.
+
+Given a labeling to the vertices of the graph, that is, functions
+$\psi_A:A \rightarrow \Sigma_A$ and $\psi_B:B \rightarrow \Sigma_B$,
+an edge $e =(a,b)$ is said to be ``satisfied'' if $\pi_e(\psi_A(a)) =
+\psi_B(b)$ (if $\pi(\psi_A(a))$ is undefined; in which case the edge
+is deemed to be unsatisfied.) The goal is to find a labeling which
+maximizes the number of satisfied edges.
+\end{definition} 
+
+We say that $\gamma$ fraction of the edges are satisfiable if there
+exists a labeling that satisfies $\gamma$ fraction of the edges. In
+the {\sc Label-Cover} notation, the size corresponds to the number of
+vertices $|A| + |B|$. The alphabet corresponds to the larger set of
+labels $\Sigma_A$.
+
+The {\sc Label-Cover} seems to be extremely useful in establishing
+inapproximability results. Khot's survey \cite{LongCodeSurvey} is an
+excellent exposition on the gamut of hardness results that can be obtained
+from {\sc Label-Cover}.  In the world of provers, the projection
+property is equivalent to a $2$ prover $1$ round game and has the
+following correspondence with the {\sc Label-cover}: The vertices in
+$A$ and $B$ are the set of questions that can posed by the verifier to
+the first prover and the second prover respectively. The set of labels
+corresponds to the answers of the provers. So, upon receiving an
+answer from the first prover, the verifier rejects the claim made by
+the provers or has uniquely determined the answer to the second
+prover's question.
+
+
+Theorem \ref{main} can be reformulated in the language of {\sc
+  Label-Cover} as follows.
+
+\begin{corollary}\label{oldcover}
+  For every $n$ and for some $\alpha, \beta > 0$ the following
+  holds. Solving an instance of ${\sc SAT}$ of size $n$ can be reduced
+  to distinguishing between the following two cases of a {\sc
+    Label-Cover} instance.
+\begin{itemize}
+\item {\sf Yes:} There is a labeling that satisfies at least $(1 -
+  \frac{1}{\log n)^\alpha})$-fraction of the edges.
+\item {\sf No:} Any labeling satisfies at most $(\frac{1}{(\log n)^\beta})$-fraction of the edges.
+\end{itemize}
+Moreover, the size of the {\sc Label-Cover} instance is $n^{1 + o(1)}$
+and every projection is linear in nature.
+\end{corollary}
+
+\eat{
+\paragraph{Soundness Amplification.}
+
+\begin{theorem}
+For every $\alpha, \beta > 0$, such that $poly\left(\frac{1}{\left(\log n\right)^\alpha}\right) + \beta = 1$,  
+\[
+		SAT \in PCP_{{1 - \frac{1}{\left(\log n\right)^\beta}}, {1 - \frac{1}{\left(\log n\right)^\alpha}}} \big [ \left(1 + o\left(1\right) \right) \cdot \log n, 2 \big ]_{\{0,1\}^{\log n}}
+\]
+\end{theorem}
+\noindent {\em Proof.} \remark{To be Done.} Apply Moshkovitz and Raz \cite{MR08}. \qed
+
+\paragraph{Other Remarks.} If instead of \cite{MR08} we would have used 
+the sum-check protocol to reduce the size of the equation to 
+{\sf polylog} $n$ and then break into ${\sf 3LIN}$ in an obvious way 
+we get the following theorem. It is a strict improvement over \cite{KP}.
+\begin{corollary}[Improved Main Theorem of \cite{KP}]
+There is a polynomial time algorithm that when given a 
+$(c,s)$-tester outputs a $(n^\alpha,\Omega(\log n)^{-3})$-tester.
+Moreover, the size of instance is ${\cal O}(n^{1 +o(1)})$.
+\end{corollary}
+}
+
+
+
+

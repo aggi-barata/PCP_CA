@@ -1,0 +1,281 @@
+ \documentclass[11pt]{article}
+\usepackage[margin=1in,letterpaper]{geometry}
+\usepackage{amssymb,amsthm}
+\usepackage{commath}
+\usepackage{amsmath}
+\usepackage{multirow}
+%\usepackage{algorithm}       
+%\usepackage{algpseudocode}
+\usepackage{graphics}
+%\usepackage{skt}
+%\renewcommand{\baselinestretch}{1.66}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\hypersetup{
+ pdfborder = 0 0 0,
+ colorlinks=true,
+ citecolor=blue,
+ backref=true,
+% linkcolor=blue,
+% urlcolor=blue,
+}
+\usepackage[hyperpageref]{backref} 
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{example}{Example}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{definition}{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[definition]{Fact}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{openproblem}{Open Problem}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem*{thma}{Theorem}
+\newtheorem*{col}{Corollary}
+\newcommand{\eat}[1]{}
+\newcommand{\eL}{{\cal L}}
+\newcommand{\A}{{\cal A}}
+\newcommand{\R}{{\sf r}}
+\newcommand{\s}{{\sf S}}
+\newcommand{\LC}{{\sf LC}}
+\newcommand{\remark}[1]{{\bf #1}}
+\newcommand{\E}[2]{{\mathbb{E}}_{#1}\left[#2\right]}                                                                                                                                                
+
+
+\begin{document}
+\eat{\begin{abstract}
+  The goal of this note is to understand the soundness of a certain variant
+of tensored tests of H{\aa}stad's Long Code Test.
+\end{abstract}
+}
+\section{Introduction}
+
+
+\paragraph{Standard Definitions.} We identify the {\em long code} of
+${x} \in \{0,1\}^s$ by $\LC$({$x$}) $= \{ f({x})\ |\ f :
+\{0,1\}^s \rightarrow \{0, 1\} \}$. Informally, we evaluate {$x$} on
+every Boolean function on $s$ bits. Notice that every Boolean function
+on $s$ bits may be represented by its truth table. In other words, by
+specifying its evaluation on all the $2^s$ inputs. Alternatively, any
+string of length $2^s$ may be interpreted as a Boolean function on $s$
+bits. We denote $2^s$ by $n$. Since, there are $2^{n}$ Boolean
+functions on $s$ bits, $\LC({\bf x})$ is a string on length
+$2^{n}$. We use the letters $a, b$ to denote Boolean functions. It is
+easy to check that given a table $f$, $ f \equiv \LC({\bf x} : \{0,
+1\}^{2^s} \rightarrow \{0,1\})$, $f(a) + f(b) = f(a + b)$, for every
+$a,b \in \{0,1\}^{2^s}$.
+
+For $\alpha \subset [n]$, define
+\[
+          \chi_\alpha : \{0, 1\}^n \rightarrow \{0, 1\},  \chi_\alpha(a) \triangleq \prod_{i\in \alpha}-1^{a(i)}
+\]
+
+It is easy to check that the characters $\{\chi_\alpha\}_{\alpha
+  \subseteq [n]}$ form an orthonormal basis for the space of functions
+$\{f : \{0, 1\}^n \rightarrow \mathbb{R}\}$, where inner product is
+defined by $\langle f, g \rangle = \mathbb{E}_a[f(a) g(a)] =
+2^{-n}\sum_a f(a)g(a)$. It follows that any function $f: \{0,1\}^n
+\rightarrow \{0,1\}$ can be written as $f = \sum_\alpha
+\hat{f}_\alpha \cdot \chi_\alpha$, where $\hat{f}_\alpha =\langle
+f,\chi_\alpha \rangle$. We start by recalling a few important
+properties of the characters of the space of Boolean functions.
+
+\begin{proposition} \label{decompose}
+For every character $\chi_\alpha$ and any two vectors $x,y$, $\chi_\alpha(x\cdot y) = \chi_\alpha(x) \cdot \chi_\alpha(y)$.
+\end{proposition}
+
+\begin{proposition}[Orthonormality]\label{equality} For $k > 1$ and vector $x$, the following holds. 
+\[
+\exists \ i,j \ \in \ [k]: \ \alpha_i \ne \alpha_j \Leftrightarrow
+\mathbb{E}_x\Big[ \chi_{\alpha_1}(x) \cdot \chi_{\alpha_2}(x) \ldots
+\chi_{\alpha_k}(x)\Big] = 0
+\]
+\end{proposition}
+
+
+\begin{proposition}\label{orthonormal}
+  For every character $\chi_\alpha$, vector $x$ and an integer $y$ such that $y\ \mbox{mod}\ 2 = 0$, 
+ \[\mathbb{E}_x\big[\left(\chi_\alpha\left(x\right)\right)^y\big]  =  1 \]
+\end{proposition}
+
+
+
+\paragraph{The Long Code Test.}\label{LC} Let $f : \{0,1\}^n \rightarrow \{0,1\}$. 
+We intend to test if $f : \{0,1\}^n \rightarrow \{0,1\}$ is in fact
+the legal encoding of a value $w \in [s]$. In other words, if $f(a) =
+a(w)$ for all $a \in [2^n]$.
+
+Fix a parameter $\rho \in [0,1]$. The test picks two uniformly random
+vectors $a,b \in \{0,1\}^n$ and then ${x} \in \{0,1\}^n$ according to
+the following distribution: for every coordinate $i \in [n]$, with
+probability $1 - \rho$ we choose $x_i = 0$ and $x_i = 1$ otherwise.
+It is useful to imagine ${x}$ as a noise vector. The test accepts iff
+$f({a}) + f({b}) + f({a + b + x}) = 0$. The test accepts iff $x_w =
+0$, which happens with probability $1 - \rho$. It follows from the
+construction that the test accepts any valid long code encoding with
+probability $1 - \rho$. We now state a certain converse of that, which
+was established by H{\aa}stad's lemma \cite{Has97}.
+
+\eat{\begin{lemma}[H{\aa}stad's lemma \cite{Has97}] If the test
+    accepts $A$ with probability $1/2 + \delta$, then $\sum_\alpha
+    \hat{A}^3_\alpha \cdot (1 - 2\rho)^{|\alpha|} \ge 2\alpha$.
+\end{lemma}
+}
+\begin{lemma}[Corollary 22.25 in \cite{AB}]
+  For every $\delta, \epsilon > 0$, if $f$ passes the long code test
+  with probability with $1/2 + \delta$, then for $k =
+  \frac{1}{2\rho}\log\frac{1}{\epsilon}$, there exists $\alpha$ with
+  $|\alpha| \le k$ such that $\hat{f}_\alpha \ge 2\delta - \epsilon$.
+\end{lemma}
+
+
+Say $f$ is a purported long code table given to the verifier. We
+denote by $T_\R$ (the long code) test performed by the verifier on
+randomness $\R$. The verifier accepts iff $T_\R$ evaluates to $0$. We
+are interested in analyzing the soundness of a variant of $T_{\R_1}
+\cdot T_{\R_2}$, for $\R_1, \R_2$ drawn from the uniform
+distribution. Our new verifier chooses $a,b,c,d$ uniformly at random
+from $\{0,1\}^{n}$ and $x,y$ are noise vectors.\eat{ where each
+  coordinate of $x$ and $y$ is set independently to $0$ with
+  probability $1 - \rho$ and $1$ otherwise.} The new test may be
+expressed as the following.
+\[ 
+ \left[f(a) + f(b) + f(a + b + x)\right]\cdot\left[f(c) + f(d) + f(c+d+y)\right] = 0
+\]
+\begin{align*} 
+\Leftrightarrow  & f(a) \cdot f(c) + f(a) \cdot f(d) + f(a) \cdot f(c +d +y) + \\ & \hspace*{.75in} f(b) \cdot f(c) + f(b) \cdot f(d) + f(b) \cdot f( c+d+y) \\ & \hspace*{1.5in} f(a+b+x) \cdot f(c) + f(a+b+x) \cdot f(d) + f(a+b+x) \cdot f(c + d+ y)  = 0 \\
+\Leftrightarrow &  f(a\cdot c) + f(a\cdot d) + f(a \cdot (c +d +y)) + \\ & \hspace*{.75in} f(b\cdot c) +  f(b\cdot d) + f(b \cdot (c +d +y)) \\ & \hspace*{1.5in} f((a+b+x) \cdot c) + f((a+b+x) \cdot d) + f((a+b+x) \cdot (c+d+y)) = 0 \label{test}
+\end{align*}
+
+\noindent We transform $\{0,1\}$ to $\{\pm 1\}$ via the mapping $b
+\rightarrow (-1)^b$. This also maps the usual XOR operation on $GF(2)$ to a
+product operation and the multiplication operation to a new operation
+$\otimes$. We now recall a few basic properties of the operation
+$\otimes$.
+
+\begin{proposition}[$\otimes$ distributes over the product] \label{distributive}
+For every $m, n, k$, 
+\begin{align*}
+m \otimes (n \cdot k) = (m \otimes n) \cdot (m \otimes k)
+\end{align*}
+\end{proposition}
+%\noindent {\em Proof Sketch.}
+\noindent Now, the ``new'' test may be written as the following.
+\begin{align*}
+  f(a\otimes c) \cdot f(a \otimes d) \cdot f(a \otimes (c\cdot d \cdot y)) \cdot f(b \otimes c) \cdot f(b \otimes d) \cdot f(b \otimes (c\cdot d \cdot y)) \cdot & \\ f((a \cdot b \cdot x) \otimes c) \cdot f((a \cdot b \cdot x) \otimes d) \cdot f((a \cdot b \cdot x) \otimes (c \cdot d \cdot y))& = 1
+\end{align*}
+\eat{
+\begin{proposition}\label{simplification}
+For every $a, b, c, d, x, y$, the following holds 
+\begin{align*}
+  & (a \cdot b \cdot x) \otimes (c \cdot d \cdot y) & = (a \otimes c)  \cdot \left(a \otimes d\right) \cdot (a \otimes y) \cdot (b \otimes c) \cdot (b \otimes d) \cdot (b \otimes y) \cdot (x \otimes c) \cdot (x \otimes d) \cdot \left(x \otimes y)\right)\\ & \\
+  \Leftrightarrow & (a \cdot b \cdot x) \otimes (c \cdot d \cdot y) \cdot (x \otimes y) &= (a \otimes c)  \cdot \left(a \otimes d\right) \cdot (a \otimes y) \cdot (b \otimes c) \cdot (b \otimes d) \cdot (b \otimes y) \cdot (x \otimes c) \cdot (x \otimes d) \\ & \\
+ \leftrightarrow &  & 
+\end{align*}
+\end{proposition}
+}
+%\subsection{Fourier Analysis}
+
+
+We would now analyze the soundness of the test discussed in the
+prequel. Say, the verifier accepts the test by probability $1/2 +
+\delta$, for some $\delta > 0$. Since the product terms like $a\otimes
+c$ and others may not be uniformly distributed, we use a standard
+trick of replacing $f(a\cdot c)$ by $f(e \cdot a\oplus c) \cdot f(e)$, where
+$e$ is chosen uniformly at random from $\{0,1\}^{n}$.
+
+\begin{align*}
+  2 \cdot \delta = &\ \mathbb{E}\Big[ f((a\otimes c) \cdot e) \cdot f(e) \cdot f((a \otimes d) \cdot e) \cdot f(e) \ldots \ldots  \eat{\\ & \ldots  f\left(\left((a \cdot b \cdot x) \otimes c\right) \cdot e\right) \cdot f(e) \cdot f\left(((a \cdot b \cdot x) \otimes d \cdot e)\right) \cdot f(e) \cdot} f\left(((a \cdot b \cdot x) \otimes (c \cdot d \cdot y) \cdot e\right) \cdot f(e) \Big]\\
+  2 \cdot \delta = & \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[ \left(\sum_{\alpha_1} \hat{f}_{\alpha_1}\chi_{\alpha_1}((a \otimes c) \cdot e) \right) \cdot \left(\sum_{\alpha_2}\hat{f}_{\alpha_2} \chi_{\alpha_2}(e) \right) \cdot \left(\sum_{\alpha_3} \hat{f}_{\alpha_3}\chi_{\alpha_3}((a \otimes d) \cdot e) \right) \ldots \\ & \hspace*{2in}\ldots \left(\sum_{\alpha_{17}} \hat{f}_{\alpha_{17}}\chi_{\alpha_{17}}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y) \cdot e)\right) \cdot \left(\sum_{\alpha_{18}}\hat{f}_{\alpha_{18}} \chi_{\alpha_{18}}(e) \right)\Bigg]\\
+  2 \cdot \delta = & \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[\sum_{\alpha_1, \alpha_2, \ldots \alpha_{18}} \hat{f}_{\alpha_1} \hat{f}_{\alpha_2} \ldots \hat{f}_{\alpha_{18}} \ \chi_{\alpha_1}((a \otimes c) \cdot e)) \cdot \chi_{\alpha_2}(e) \cdot \chi_{\alpha_3}((a \otimes d) \cdot e)) \ldots \\ &  \hspace*{2.5in} \ldots  \chi_{\alpha_{17}}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y) \cdot e) \cdot \chi_{\alpha_{18}}(e) \Bigg] 
+\end{align*}
+
+\noindent By linearity of expectation, the above expression may be written as follows.
+
+\begin{align*}
+  2 \cdot \delta = & \ \sum_{\alpha_1, \alpha_2 \ldots \alpha_{18}} \hat{f}_{\alpha_1}\hat{f}_{\alpha_2} \ldots \hat{f}_{\alpha_{18}}\ \ \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[\chi_{\alpha_1}((a \otimes c) \cdot e)) \cdot \chi_{\alpha_2}(e) \cdot \chi_{\alpha_3}((a \otimes d) \cdot e)) \ldots \\ & \hspace*{2.5in} \ldots  \chi_{\alpha_{17}}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y) \cdot e) \cdot \chi_{\alpha_{18}}(e) \Bigg]
+\end{align*}
+
+\noindent We apply Proposition \ref{decompose} to simplify the above
+expression to the following.
+\begin{align*}
+ 2 \cdot \delta = & \  \sum_{\alpha_1, \alpha_2 \ldots \alpha_{18}} \hat{f}_{\alpha_1}\hat{f}_{\alpha_2} \ldots \hat{f}_{\alpha_{18}}\ \ \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[\ \chi_{\alpha_1}(a \otimes c) \cdot \chi_{\alpha_1}(e) \cdot \chi_{\alpha_2}(e) \cdot \chi_{\alpha_3}(a \otimes d) \cdot \chi_{\alpha_3}(e)  \ldots \\ &  \hspace*{2.5in} \ldots  \chi_{\alpha_{17}}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y)) \cdot \chi_{\alpha_{17}}(e) \cdot \chi_{\alpha_{18}}(e) \Bigg]
+\end{align*}
+
+\noindent Since $e$ is mutually independent from $a,b,c,d,x,y$, we have
+
+\begin{align*}
+2 \cdot \delta = & \  \sum_{\alpha_1, \alpha_2 \ldots \alpha_{18}} \hat{f}_{\alpha_1}\hat{f}_{\alpha_2} \ldots \hat{f}_{\alpha_{18}}\ \ \mathbb{E}_{a,b,c,d,x,y}\Bigg[\ \chi_{\alpha_1}(a \otimes c) \cdot  \chi_{\alpha_3}(a \otimes d) \ldots  \chi_{\alpha_{17}}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y)) \Bigg] \cdot \\ & \hspace{2.5in}  \mathbb{E}_e \Bigg[ \chi_{\alpha_1}(e) \cdot \chi_{\alpha_2}(e) \cdot \chi_{\alpha_3}(e) \ldots \chi_{\alpha_{18}}(e) \Bigg]
+\end{align*}
+
+\noindent We now invoke Proposition \ref{equality} to conclude that
+the expectation is $0$ unless $\alpha_1 = \alpha_2 \ldots =
+\alpha_{18}$. Therefore,
+\begin{align*}
+  2 \cdot \delta = & \sum_\alpha \hat{f}^{18}_{\alpha}\  \mathbb{E}_{a,b,c,d,x,y}\Bigg[\ \chi_{\alpha}(a \otimes c) \cdot  \chi_{\alpha}(a \otimes d) \ldots  \chi_{\alpha}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y)) \Bigg] \cdot \mathbb{E}_e \Bigg[ \left(\chi_{\alpha}\left(e\right)\right)^{18} \Bigg]\\
+\end{align*}
+
+\noindent By Proposition \ref{orthonormal}, $\mathbb{E}_e \Bigg[
+\left(\chi_{\alpha}\left(e\right)\right)^{18} \Bigg] = 1$. Hence,
+
+\begin{align*}
+2 \cdot \delta = & \sum_\alpha \hat{f}^{18}_{\alpha}\ \  \mathbb{E}_{a,b,c,d,x,y}\Bigg[\ \chi_{\alpha}\left( \left(a \otimes c\right) \cdot  \chi_{\alpha}(a \otimes d) \ldots  \chi_{\alpha}((a \cdot b \cdot x) \otimes (c \cdot d \cdot y)\right) \Bigg] \\
+= & \sum_\alpha \hat{f}^{18}_{\alpha}\ \  \mathbb{E}_{a,b,c,d,x,y}\Bigg[\ \chi_{\alpha}\Big( (a \otimes c)  \cdot \left(a \otimes d\right) \cdot (a \otimes (c \cdot d \cdot y)) \cdot \\ & \hspace{2in} (b \otimes c) \cdot (b \otimes d) \cdot b \otimes \left(c \cdot d \cdot y \right) \cdot \\ & \hspace*{2.5in} ((a \cdot b \cdot x) \otimes c) \cdot ((a \cdot b \cdot x) \otimes d) \cdot \left((a \cdot b \cdot x) \otimes (c \cdot d \cdot y)\right) \Big) \Bigg]
+\end{align*}
+
+\noindent Invoking Proposition \ref{distributive}, we rewrite the above as.
+
+\begin{align*}
+  2 \cdot \delta = & \sum_\alpha \hat{f}^{18}_{\alpha}\ \
+  \mathbb{E}_{a,b,c,d,x,y}\Bigg[\ \chi_{\alpha}\Big( \left( a \otimes y \right) \cdot \\ & \hspace*{2in} (b \otimes y) \cdot \\ & \hspace*{2.5in} \left(a \cdot b \cdot x\right) \otimes y \Big) \Bigg]\\
+ = & \sum_\alpha \hat{f}^{18}_\alpha \ \mathbb{E}_{x,y}\Big[\chi_\alpha(x \otimes y)\Big]
+\end{align*}
+
+\noindent Denote $x \otimes y$ by $z$. Notice that each coordinate of
+$z$ in the above equation is drawn is chosen independently from the
+product distribution of $x\otimes y$. Since, each coordinate of $x,y$
+is independently set to $1$ with probability $1 - \rho$ and $-1$
+otherwise, $\E{}{z_w} = \E{}{x_w \otimes y_w} = 1 \cdot ((1 - \rho)^2 +
+\rho^2) - 1 \cdot 2 \cdot (1 -\rho) \cdot \rho = 1 - 4\rho + 4
+\rho^2.$ Now, since each coordinate is chosen independently,
+$\E{z}{\chi_\alpha(z)} = \E{z}{\prod_{w \in \alpha}z_w}$.  Hence,
+\begin{align*}
+  2 \delta &= \sum_{\alpha} \hat{f}_\alpha^{18} \left(1 - 4\cdot \rho\cdot \left(1 - \rho\right)\right)^{|\alpha|} \\
+\end{align*}
+
+
+
+
+\eat{
+  &\le \sum_{\alpha} \hat{A}_\alpha^18 (1 - 4\rho )^{|\alpha|} \ \ \ \ \  \ \  \because \hat{A}_\alpha \le 1\\
+  &\le \sum_{|\alpha| =1} \hat{A}_\alpha^2 (1 - 2\rho) +
+  \sum_{|\alpha| > 1} \hat{A}_\alpha^2 (1 - 2\rho)^{|\alpha|}, \ \ \ \
+  \hat{A}_\emptyset = 0 \ \ \mbox{due to folding}
+%  &\le \sum_{|\alpha| =1} \hat{A}_\alpha^2 (1 - 2\rho) + \sum_{|\alpha| > 1} \hat{A}_\alpha^2 (1 - 2\rho)^{|\alpha|}  \\
+ \end{align*}
+
+ \noindent Since $A$ is assumed to have been folded, $\hat{A}_{\alpha}
+ = 0$ if $|\alpha|$ is even. Hence, $(1 - 2\rho)^{|\alpha|} \le (1 -
+ 2\rho)^{3}$.  Therefore, the above expression can be written as follows.
+\begin{align*}
+  1 - 2\delta &\le \sum_{|\alpha| =1} \hat{A}_\alpha^2 (1 - 2\rho) + \sum_{|\alpha| > 1} \hat{A}_\alpha^2 (1 - 2\rho)^{3} \\
+  & \le (1 -\Phi) (1 - 2\rho) + \Phi ( 1 - 2\rho)^{3} \ \ \ \  \ \ \
+  \mbox{Let} \sum_{\alpha, |\alpha| > 1}\hat{A}^2_\alpha = \Phi\\
+ 1 - 2\delta &\le (1 - 2\rho) (1 - \Phi + \Phi (1 -2 \rho)^2) \\
+{1 - 2\delta}/{1 - 2\rho} & \le (1  - \Phi (1 - (1 - 2\rho)^2)\\             
+1 - 2(\delta - \rho) & \le 1 - \Phi (1 - (1 - 2\rho)^2)\\
+\Phi & \le 2(\delta - \rho)/(4\rho - 4\rho^2)
+\end{align*}
+\noindent Since, $\rho$ is a fixed parameter, we have $\Phi = {\cal
+  O}(\delta)$ At which point, we recall a result of Friedgut, Kalai
+and Naor \cite{FKN} which (informally) states that if the fourier
+coefficients are concentrated on the lowest two levels, then the
+function is close to a constant function or a function that is
+determined by a single coordinate.}
+\bibliographystyle{alpha}
+\bibliography{Completeness_Amplification}
+\end{document}

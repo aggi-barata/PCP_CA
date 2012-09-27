@@ -1,0 +1,905 @@
+
+\section{Preliminaries}
+
+Throughout this section we work with the binary alphabet $\Sigma =
+\{0,1\}$, and arithmetic over the alphabet is over the field $GF(2)$.
+
+\subsection{Hamming Weight}
+
+We start by introducing the notion of Hamming weight and its
+corresponding metric the Hamming distance. For any ${\bf x} \in
+\Sigma^n$, the hamming weight of {\bf x} is the number of nonzero
+coordinates of {\bf x}, also known by $wt({\bf x})$. The weight
+function is a norm and the corresponding metric $d({\bf x, y})$ is the
+weight of difference between {\bf x} and {\bf y}, that is, $wt({\bf x}
++ {\bf y})$ . It is often useful to normalize the Hamming weight
+(resp. distance) w.r.t. $n$. From now on, we use normalized Hamming
+weight, which is wt(${\bf x}$)$/n$. Also, we use bold face small case
+letters {\bf x}, {\bf y} to denote column vectors and upper case bold
+letters like {\bf A}, {\bf X} to denote matrices.  We use the notation
+({\bf $\cdot$ })$^T$ to denote the transpose of the corresponding
+vector or matrix.
+
+\begin{claim} \label{ind} For every {\bf x, y, z}, d({\bf x}, {\bf y})
+  = $d({\bf x} + {\bf y}, {\bf y} + {\bf z})$.
+\end{claim}
+\noindent {\em Proof.} Say that {\bf x, y} agree on a coordinate $i$,
+then they continue to remain so even after adding ${\bf z}$ to both
+{\bf x, y}. Similarly, if {\bf x,y} disagree on the coordinate. \qed
+
+\subsection{Linear Systems of Equations}
+
+Let $\eL,\ \eL \ \equiv {\bf Ax} + {\bf y} = {\bf 0}$, be a linear
+system with $m$ equations over $n$ variables ${\bf x}$. We use the notation
+UNSAT($\eL$, {\bf x}) to denote the fraction of unsatisfied equations
+in $\eL$ when its variables are assigned to {\bf x}. Note that, this
+is exactly same as the Hamming weight of ${\bf Ax} + {\bf y}$. We
+define the UNSAT value of $\eL$ as follows.
+
+
+\begin{definition}[UNSAT($\eL$)] The UNSAT value of $\eL$ is defined
+  to be minimum fraction of unsatisfied equations over all possible
+  assignments to the variables.
+\end{definition}
+
+
+\begin{proposition} \label{unsat}
+The following holds:
+\begin{equation}
+                \mbox{UNSAT(}\eL\mbox{)} = \min_{{\bf x}} d({\bf Ax, y}) = \min_{{\bf x}} d({\bf Ax + y, 0}) \label{UNSATEQ}
+\end{equation}
+\end{proposition}
+\noindent {\em Proof.} Recall that, UNSAT value of $\eL$ is the
+minimum Hamming weight of {\bf Ax +y} over all ${\bf x}$. This settles
+that the first and the last expression are the same. Now, subtract
+{\bf y} from both terms of $d$({\bf Ax + y, 0}). We now invoke Claim
+\ref{ind} to establish that shifts preserve Hamming distances.
+And this establishes the truth of \eqref{UNSATEQ}. \qed \\
+
+
+\section{Tensoring} \label{section:Tensoring}
+
+We start by defining the tensor of $n$-dimensional vector
+${\bf x}$ over a binary alphabet.
+
+\begin{definition}[Tensor]\label{Tensoring}
+  We define the tensor of a vector ${\bf x} \in \{0,1\}^n$ as the $n\times n$ matrix ${\bf
+    x}^{\otimes 2}$ that has in its $i,j$ position the entry $x_i\cdot x_j$.
+\end{definition}
+We often treat matrices as vectors, so an $n\times n$ matrix corresponds to a vector of length $n^2$.
+
+The tensor $\eL^{\otimes 2}$ of the system $\eL$ involves
+taking the products of all possible pairs of (left hand sides of) linear equations from $\eL$,
+and then linearizing them via replacing terms of the form $x_i \cdot
+x_j$ with $x_{ij}$ and $x_i$ with $x_{ii}$ (recall that in $GF(2)$ it holds that $x_i^2 = x_i$). The claim that we make about the aforementioned
+transformation is that the UNSAT values of $\eL$ and its tensor are
+very closely related. In what follows, we make this connection
+explicit. 
+
+\begin{definition}
+  Given a linear system $\eL$, $\eL \equiv {\bf Ax + y = 0}$, over variables 
+  ${\bf x} = (x_1, \ldots x_n)$, the tensor of
+  $\eL$ is defined in two steps: (1) Consider the quadratic system $\left({\bf Ax + y}\right) \cdot \left({\bf Ax +
+      y} \right)^T$. (2) Linearize the quadratic system by replacing every term of the form $x_i \cdot x_j$ for
+  $i, j \in [n]$ by $X_{ij}$, and every term of the form $x_i$ for $i\in [n]$ with $X_{ii}$. We denote this linearized system by $\eL^{\otimes
+    2}$. We use the matrix ${\bf X}$ to denote the variables $X_{ij}$ of this system.
+\end{definition} 
+As a matter of convention, we associate with ${\bf X}$, the variables of the tensored system, 
+its diagonal ${\bf x} = (X_{11},\ldots,X_{nn})$, as a candidate assignment to the original system. 
+Note that when ${\bf X} = {\bf x}^{\otimes 2}$, it indeed holds that ${\bf X}$'s diagonal is ${\bf x}$.
+Using this convention, we can develop an expression for the system $\eL^{\otimes 2}$ as a 
+function of the ingredients of $\eL$, i.e., the matrix ${\bf A}$ and the vector ${\bf y}$:
+\begin{eqnarray}\label{eq:tensored-system}
+{\bf AXA}^T + {\bf y}({\bf Ax})^T + \left({\bf Ax} + {\bf y} \right)\cdot {\bf y}^T
+\end{eqnarray}
+
+
+\begin{proposition}\label{basic}
+  For every linear system $\eL$,
+\[
+    \mbox{UNSAT}(\eL^{\otimes 2}, {\bf x}^{\otimes 2}) = \mbox{UNSAT}(\eL, {\bf x})^2.
+\]
+\end{proposition}
+\noindent {\em Proof.} When ${\bf X} = {\bf x}^{\otimes 2}$, the tensored system $\eL^{\otimes 2}$ is the same as the qudratic system from which it was generated. An equation in the quadratic system is not satisfied if and only if both of the equations it consists of were not satisfied. The relation stated in the proposition follows. \qed \\
+
+%\begin{claim} \label{claim:linearTensorProperty}
+%For every {\bf A}, {\bf X}, the rows and columns of the linear 
+%form ${\bf AXA}^T$ are equal to {\bf Ax}, for some {\bf x}.
+%\end{claim}
+%\noindent {\em Proof.}  Follows from the fact that the columns and rows of a %tensored code	
+%are the codewords of code being tensored \cite{ECC}. \qed
+
+\begin{lemma}\label{converse} For every linear system $\eL$ over variables ${\bf X}$ with diagonal ${\bf x}$,
+$$\mbox{UNSAT}(\eL^{\otimes 2},{\bf X}) \geq \mbox{UNSAT}(\eL, {\bf x})\cdot \mbox{UNSAT}(\eL).$$
+In particular, $\mbox{UNSAT}(\eL^{\otimes 2}) \geq \mbox{UNSAT}(\eL)^2$.
+\end{lemma}
+\noindent {\em Proof.} 
+Let us use the following notation for the two parts of $\eL^{\otimes
+  2}$ as in Equation~(\ref{eq:tensored-system}):
+$${\bf P}:= {\bf AXA}^T + {\bf y}({\bf Ax})^T;\;\;\; {\bf Q}:= ({\bf Ax} + {\bf y}){\bf y}^T.$$
+We start by analyzing {\bf Q}. For every $i\in [n]$, the $i$'th row of
+${\bf Q}$ is either {\bf 0}, if $({\bf Ax} + {\bf y})_i = 0$, or {\bf
+  y}, if $({\bf Ax} + {\bf y})_i =1$.
+
+Consider {\bf P}. We observe that the rows of ${\bf AXA}^T$ are all in
+the image of ${\bf A}$, and so are the rows of ${\bf y}({\bf
+  Ax})^T$. It follows from linearity that all of ${\bf P}$'s rows are
+in the image of ${\bf A}$.
+
+Thus, for every $i\in [n]$ such that $({\bf Ax} + {\bf y})_i =1$, the
+$i$'th row of ${\bf P + Q}$ is of the form ${\bf A x_i} + {\bf y}$ for
+some ${\bf x_i}$.  Overall, for at least $\mbox{UNSAT}(\eL,x)$ of the
+rows, there are at least $\mbox{UNSAT}(\eL)$ non-zeros. \qed 
+
+
+\subsection{Decoding Tensored Systems}
+
+So far, we were essentially recollecting well known facts. In this
+work, we would like to use tensoring to construct a PCP. In any PCP
+theorem, the challenging part is to infer some structure if we accept
+certain proof. Informally, this corresponds to establishing that if we
+accept a purported proof, we must be able to decode an assignment that
+(approximately) achieves the claims made by the purported proof. For
+our use of tensoring, we would like to state that if an assignment
+${\bf X}$ maximally satisfies the tensored system, then necessarily
+${\bf X} = {\bf x}^{\otimes 2}$ when ${\bf x}$ is the diagonal of
+${\bf X}$. We only focus on symmetric matrices ${\bf X}$. We can
+enforce this using a technique known as {\em folding} in the proof
+verification literature.
+
+\subsubsection{Folding} 
+
+We can restrict our ${\bf X}$'s to symmetric matrices, that is,
+${X}_{ij} = {X}_{ji}$ for all $i,j\in [n]$. This is done simply by not
+having separate entries for $X_{ij}$ and $X_{ji}$, but only one entry,
+say $X_{ij}$. The term $X_{ji}$ is replaced by $X_{ij}$.
+
+\subsubsection{Observations}
+
+The following observations will be crucial for our analysis:
+
+\begin{proposition}\label{symmetric}
+For every symmetric matrix {\bf M}, if the Hamming weight of {\bf M} is $k^2$ and
+there is a subset of $k$ rows each with a Hamming weight of $k$, then it must be that
+{\bf M} has only $k$ non-zero columns. Moreover, the Hamming weight
+of each of these columns is $k$.
+\end{proposition}
+\noindent {\em Proof.} Assume for the sake of contradiction that {\bf M}
+has $k+1$ non-zero columns. From the symmetry of {\bf M}, it follows that
+{\bf M} has $k + 1$ non-zero rows. Since, {\bf M} already has $k$ rows each with Hamming weight 
+$k$, an additional non-zero row would imply that the Hamming weight of {\bf M} is larger than $k^2$ 
+and this contradicts the hypothesis. Thus, it must be that {\bf M} has only $k$ non-zero 
+columns. The artifact that each of these columns has a Hamming weight of $k$ follows from symmetry. \qed
+
+
+\begin{proposition}[Uniqueness]\label{unique}
+For every {\bf x} $\in {GF}_2^n$, every row of {\bf x}$^{\otimes 2}$ is 
+either equal to {\bf x} or {\bf 0}. Moreover, {\bf x}$^{\otimes 2}$ is symmetric.
+\end{proposition}
+\noindent {\em Sketch.} Follows from the definition of {\bf
+  x}$^{\otimes 2}$ and that we are working with ${GF}_2$. \qed
+
+\begin{proposition}[Converse of Uniqueness]\label{converseUnique}
+  For every symmetric {\bf X}, if every row of {\bf X} is either {\bf
+    x} or {\bf 0}, then {\bf X} = {\bf x}$^{\otimes 2}$.
+\end{proposition}
+\noindent {\em Proof.} Say {\bf X} has {\bf x} over rows $R$. By
+symmetry, {\bf X} also has them over $R$ columns. Thus, {\bf X} has
+$1$ in the ($i,j$) entry whenever {\bf x} has $1$ at both $i$-th and
+$j$-th entries and zero elsewhere. And this is exactly the definition
+of {\bf x}$^{\otimes 2}$.\qed\\
+
+\noindent For any linear system $\eL \equiv {\bf Ax} + {\bf y} = {\bf 0}$, we define d($\A$) as
+the $\min_{{\bf x} \ne {\bf 0}} {\bf Ax}$.\footnote{This is exactly
+  the distance of the linear code having {\bf A} as its generator
+  matrix.}
+
+\begin{claim}
+  For every {\bf A} and {\bf x}$^{\otimes 2}$, the linear form ${\bf
+    Ax}^{\otimes 2}{\bf A}^T$ has every row equal to either {\bf Ax}
+  or {\bf 0}.
+\end{claim}
+\noindent {\em Sketch.} One may rewrite ${\bf Ax}^{\otimes 2}{\bf A}^T$  as 
+${\bf Ax}\cdot ({\bf Ax})^T$ . Thus, the product is of the form $({\bf  Ax})^{\otimes 2}$ 
+and now the claim follows from Proposition \ref{unique}. \qed
+
+
+
+\begin{claim} \label{NonUnique}
+For every {\bf A} and symmetric {\bf X}, if every row of the linear 
+form ${\bf AXA}^T$ is either {\bf Ax} or {\bf 0} and d($\A$) $ > 0$, then 
+{\bf X} = {\bf x}$^{\otimes 2}$.
+\end{claim}
+\noindent {\em Proof.} Since d($\A$) $> 0$, for any ${\bf v_1}$ different from ${\bf v_2},\ {\bf Av_1} \ne {\bf Av_2}$. 
+Given this observation, for any ${\bf z}$ in the image of {\bf A}, one
+can uniquely determine ${\bf x_0}$ such that ${\bf Ax_0} = {\bf z}$. 
+Now, the Claim follows via similar arguments as in Proposition 
+\ref{converseUnique}. \qed\\
+
+	
+\begin{claim} \label{claim:Punique}
+For every linear system $\eL, \eL \equiv {\bf Ax} + {\bf y} = {\bf 0}$, and any symmetric {\bf X},
+if every row of ${\bf P}, {\bf P} = {\bf AXA}^T + {\bf y}  
+\cdot ({\bf Ax})^T$, is either {\bf Ax} or {\bf 0} and d($\A$)  $> 0$, 
+then {\bf X} $=$ {\bf x}$^{\otimes 2}$. 
+\end{claim}
+\noindent {\em Proof.}  We start by observing that if every row of
+{\bf P} is either {\bf Ax} or {\bf 0}, then the sum of ${\bf P}$ and
+${\bf y}({\bf Ax})^T$ also has each of its row either equal to {\bf
+  Ax} or {\bf 0}.  The last observation follows from the fact that we
+are working with ${GF}_2$ and it is easy to see that the set
+$\{{\bf Ax}, {\bf 0}\}$ is closed under addition. Thus, {\bf Z}, {\bf
+  Z} = ${\bf P} + {\bf y}({\bf Ax})^T$, has every row either equal to
+{\bf Ax} or {\bf 0}.  Recall that {\bf Z} is essentially the linear
+form ${\bf AXA}^T$, for some {\bf X}. Since d($\A$) $> 0$,  we may invoke
+ Claim \ref{NonUnique} to infer that {\bf X} must be equal to {\bf x}$^{\otimes 2}$.  \qed
+
+\begin{proposition}\label{Non-equality}
+For any non-zero {\bf v} and every {\bf X}, linear 
+system $\eL, \ \eL$ = {\bf Ax} $+$ {\bf y} = {\bf 0}, such 
+that UNSAT($\eL$) $> 0$ and d($\A$) $ > 0$, 
+it holds that  ${\bf AXA}^T  \ne {\bf y} \cdot ({\bf Av})^T$.
+\end{proposition}
+\noindent {\em Proof.}  It follows from linearity that the 
+columns of ${\bf AXA}^T$ are in the image of
+{\bf A}. Also from hypothesis, since {\bf v} is non-zero and d($\A$) $> 0$, 
+it follows that ${\bf Av}$ is 
+a non-zero vector. Thus, at least one column of ${\bf y} \cdot ({\bf Av})^T$ is 
+equal to {\bf y}. We now use Proposition \ref{unsat} over that column to conclude that for any {\bf z}, {\bf Az} and {\bf y} differ
+on at least one of the coordinates. Thus, for any {\bf v} different from {\bf 0} and every {\bf X} and $\eL$,  
+it holds that ${\bf AXA}^T  \ne {\bf y} \cdot ({\bf Av})^T$, unless d($\A$) = 0.  \qed
+
+
+\subsubsection{Main Lemma}
+
+\noindent We now show that if the prover provides us with any
+assignment ${\bf X}$ other than one equal to {\bf x}$^{\otimes 2}$, then
+UNSAT($\eL^{\otimes 2}$, {\bf X}) is larger than $d^2$. 
+
+\begin{lemma}[Unique Tensor Lemma]\label{decode}
+  For any linear system $\eL, \eL \equiv {\bf AX} + {\bf y} = {\bf
+    0}$, with UNSAT value $d$ and every symmetric ${\bf X}$, if
+  UNSAT($\eL^{\otimes 2}, {\bf X}$) = $d^2$, then {\bf X} = {\bf
+    x}$^{\otimes 2}$ unless d($\A$) = 0.% Moreover, the
+%  UNSAT($\eL$, {\bf x}) = UNSAT($\eL, \tilde{\bf x}$) = $d$.
+\end{lemma}
+\noindent {\em Proof.} We begin by recalling that for every {\bf X}
+\[
+\mbox{UNSAT}(\eL^{\otimes 2}, {\bf X}) = \mbox{wt}({\bf AXA}^T + {\bf
+  y}({\bf Ax})^T + \left({\bf Ax} + {\bf y} \right)\cdot {\bf y}^T)
+\]
+
+\noindent As a matter of convention, we denote the first two terms of the RHS 
+by {\bf P} and the latter by {\bf Q}. Let us 
+denote the indices of the non-zero rows of {\bf Q} by $\s$. Recall Lemma 
+\ref{converse} to infer that wt$({\bf Ax} + {\bf y})$ must be $d$. 
+Thus, $|\s| = d$. Also, the Hamming weight of {\bf P} + {\bf Q} over the
+rows indexed by $\s$ is at least $d^2$. Let ${\overline{\s}}$ denote 
+the set of indices of all non-zero rows of {\bf P} such that the 
+corresponding row of {\bf Q} is equal to {\bf 0}. \\
+
+
+\noindent For the Hamming weight of {\bf P} + {\bf Q} to be 
+equal to $d^2$, it must be that $\overline{\s} = \emptyset$. For 
+otherwise, since the sets $\s$ and $\overline{\s}$  are disjoint, the 
+Hamming weight of {\bf P} + {\bf Q} is at least the sum total of Hamming
+weight over rows with indices $\s$ and $\overline{\s}$, which is greater 
+than $d^2$ unless $\overline{\s} = \emptyset$.\footnote{Because, the non-zero rows of 
+{\bf Q} alone contribute to a weight of $d^2$ in {\bf P} + {\bf Q} while $\overline{\s}$ deals with 
+only the rows of {\bf Q} which are equal to {\bf 0}.} Thus, if the 
+Hamming weight of {\bf  P} + {\bf Q} is $d^2$, then the 
+weight of {\bf P} cannot be outside the non-zero rows of {\bf Q}.\\
+
+\noindent We now show that if each of the rows in {\bf P} indexed by $\s$ ain't the 
+same, then the Hamming weight of {\bf P} + {\bf Q} is strictly larger than $d^2$. In what follows
+we shall deal with abolute Hamming weight rather than its normalized definition. Say, there are two rows ${\bf A}\hat{\bf
+    x}$ and {\bf A}$\tilde{\bf x}$ different from one another. Since 
+${\bf A}\hat{\bf  x}$ and {\bf A}$\tilde{\bf x}$ are different from one another, they must differ on at least one coordinate.
+Also, since the indices of these rows are in $\s$, they are both added to {\bf y}.
+We now observe via Claim \ref{ind} that ${\bf A}\hat{\bf
+    x} + {\bf y}$ and {\bf A}$\tilde{\bf x} + {\bf y}$ must also
+  differ on at least one coordinate. Moreover, by Proposition
+  \ref{unsat} any {\bf Ax$_0$} + {\bf y} must have at least $dm$ non-zero
+  coordinates, where $m$ is the dimension of {\bf y}. Hence, there are 
+at least $dm + 1$ non-zero coordinates over
+  both ${\bf A}\hat{\bf x} + {\bf y}$ and {\bf A}$\tilde{\bf x} + {\bf
+    y}$. Therefore, {\bf P} + {\bf Q} must have at least
+  ($dm + 1$) non-zero columns. Since {\bf P} + {\bf Q} is symmetric, by 
+the contrapositive of Proposition \ref{symmetric}, if {\bf P} +{\bf Q}
+has ($dm + 1$) non-zero columns, then either the Hamming weight of {\bf P} + {\bf Q} 
+is not $d^2 \cdot m^2$ or {\bf P} + {\bf Q} does not have $d \cdot m$ rows each with 
+Hamming weight $d \cdot m$. Since, the rows of {\bf P} + {\bf Q} indexed by $\s$ are in fact 
+$d \cdot m$ rows each with a Hamming weight of $d \cdot m$, it must be that 
+the Hamming weight of {\bf P} + {\bf Q} is not $d^2 \cdot m^2$. Hence, if {\bf P} does 
+not have the same row over the rows indexed by $\s$, the Hamming weight of 
+  {\bf P} + {\bf Q} is strictly greater than $d^2 \cdot m^2$. In other words, if the
+(normalized) Hamming weight of {\bf P} + {\bf Q} is $d^2$, then {\bf P} has the 
+same row across every row indexed by $\s$.  \\
+
+
+\noindent In short, we have established that {\bf P} must have the same row across
+all indices in $\s$ and every row outside $\s$ is {\bf 0}. {\em w.l.o.g.}, assume that one of the following is true: 
+(1) {\bf P} has {\bf Ax} as its row across all rows indexed by $\s$. (2)
+{\bf P} has a row different from {\bf Ax}.
+
+\begin{enumerate}
+\item [Case 1:] Since every row of {\bf P} is either {\bf Ax} or {\bf 0}
+and d($\A$) $> 0$, by Claim \ref{claim:Punique}, {\bf X} = {\bf x}$^{\otimes
+  2}$. 
+ 
+\item [Case 2:] Assume for the sake of contradiction that {\bf P} has a row ${\bf
+    A}\tilde{\bf x}$ different from {\bf Ax}. Also  since 
+${\bf A}\tilde{\bf x}$ different from {\bf Ax}, we may deduce that 
+${\bf x}$ is different from  $\tilde{\bf x}$.  Now, {\bf P} + {\bf Q} can be written
+as.
+\begin{align*}
+  {\bf  P} + {\bf Q} &= ({\bf Ax} +
+  {\bf y}) \cdot ({\bf A}\tilde{\bf x})^T + \left({\bf Ax} + {\bf y}
+  \right)\cdot {\bf y}^T \\
+  & = {\bf A} \cdot {\bf x} \cdot \tilde{\bf x}^T \cdot
+  {\bf A}^T + {\bf y}\cdot \left({\bf A}\tilde{\bf x}\right)^T +  \left( {\bf Ax} + {\bf y} \right)\cdot {\bf y}^T
+\end{align*}
+
+But, the above expression must be exactly equal to 
+ \[
+ {\bf AXA}^T + {\bf y}({\bf Ax})^T + \left({\bf Ax} + {\bf y} \right)\cdot {\bf y}^T
+\]
+
+Therefore,
+\begin{align*}
+  {\bf AXA}^T + {\bf y}({\bf Ax})^T &= {\bf A} \cdot {\bf x} \cdot
+  \tilde{\bf x}^T \cdot
+  {\bf A}^T + {\bf y}\cdot \left({\bf A}\tilde{\bf x}\right)^T\\
+  {\bf A} \cdot ({\bf X} + {\bf x} \cdot \tilde{\bf x}^T) \cdot {\bf A}^T &= {\bf y} \cdot \left({\bf A} \cdot \left({\bf x} + \tilde{\bf x}\right)\right)^T
+\end{align*}
+Since, {\bf x} is different from $\tilde{\bf x}$, it follows that
+${\bf x} + \tilde{\bf x}$ is a non-zero vector. Therefore, we can invoke Proposition \ref{Non-equality}
+to conclude that there is no $({\bf X} + {\bf x} \cdot \tilde{\bf x}^T)$ for which
+the above holds. Hence, a contradiction. Therefore, {\bf P} cannot have 
+only ${\bf A}\tilde{\bf x}$, for any ${\bf A}\tilde{\bf x}$ 
+different from {\bf Ax}, in the rows indexed by $\s$.
+\end{enumerate}
+
+This concludes the proof of the Lemma as we have established that if 
+UNSAT($\eL^{\otimes 2}, {\bf X}$) = $d^2$,
+then ${\bf X} = {\bf x}^{\otimes 2}$ unless d($\A$) = 0.\qed 
+
+
+% -------------------------    Excluded  ---------------------------------------------------------------------------------------------
+
+
+\eat{
+
+
+
+
+\eat{
+
+
+Let us denote the set of rows whose indices are in $\s$ by
+  {\bf P}$_\s$.
+
+
+
+
+  Now consider the definition of {\bf P}, {\bf P} is obtained by
+  adding {\bf AXA}$^T$ and ${\bf y} \cdot ({\bf Ax})^T$.  From the
+  conclusions of the previous paragraph, we understand that {\bf
+    P}$_\s$ is exactly equal to {\bf A}$\tilde{\bf x}$.  It is not
+  hard to see that for ${\bf P}_\s$ to be {\bf A}$\tilde{\bf x}$, the
+  $i$-th row of ${\bf AXA}^T$, denoted by $\{{\bf AXA}^T\}_i$, must be
+  exactly the following.
+\[
+{\bf AXA}^T_i =
+\left\{ \begin{array}{lcl}
+ {\bf A}\cdot({\bf x} + \tilde{\bf x}) & \mbox{for}
+& {\bf y}_i = 1,  \{{\bf Ax + y}\}_i  =1\\ {\bf Ax} & \mbox{for} &  {\bf y}_i = 1, \{{\bf Ax + y}\}_i = 0 \\
+{\bf A}\tilde{\bf x} & \mbox{for} & {\bf y}_i = 0, \{{\bf Ax + y}\}_i =1 \\
+{\bf 0} & \mbox{for} & {\bf y}_i = 0, \{{\bf Ax + y}\}_i = 0\\
+\end{array}\right.
+\]
+
+At this point, note that {\bf A}, {\bf y}, {\bf x} and $\tilde{\bf x}$
+are fixed. Given this setting, it easy to see that {\bf X} can be
+computed exactly via Gaussian elimination. It now follows that {\bf X}
+= $f({\bf A}, {\bf x}, \tilde{\bf x})$.  Thus, if the
+UNSAT($\eL^{\otimes 2}$) = $d^2$, then {\bf X} is a function of {\bf
+  A}, {\bf x} and $\tilde{\bf x}$.}
+
+
+  \noindent A comment on the above lemma is due. Lemma \ref{decode}
+  implies that if a tensored system satisfies a certain fraction of
+  equations, then the tensored assignment is constructed from a unique
+  assignment of $\eL$.  The key idea was that we set up ourselves such
+  that we operate in the {\em unique decodability regime} of the
+  tensored system. We summarize this via the following corollary.
+
+\begin{corollary}
+For every linear system $\eL$, $\eL \equiv {\bf Ax} + {\bf y} = {\bf 0}$, and {\bf X} with diagonal vector {\bf x}, unless d($\A$) = 0,
+\[
+ \mbox{UNSAT}(\eL^{\otimes 2}, {\bf X})  \le  \mbox{UNSAT}(\eL)^2    \implies {\bf X} = {\bf x}^{\otimes 2} 
+\]
+\end{corollary}
+
+
+\paragraph{Linear Codes and Homogeneous Linear System.}
+
+A homogeneous system of linear equations $\eL$ is one where setting
+every variable to $0$ satisfies $\eL$. Also recall that a linear
+system with $m$ equations over $n$ variables can be denoted by a
+matrix ${\bf A \cdot x } = {\bf 0}, {\bf A} \in \mathbb{F}_2^{m\times
+  n}$ and ${\bf x} \in {\mathbb F}^n_2q$.
+
+The matrix ${\bf A}$ can also be conceived as the generator matrix of
+a linear code \A = $\{ {\bf x \cdot A} | {\bf x} \in
+\mathbb{F}^n_q\}$.  Thus, if $\eL$ has a non-trivial assignment,
+meaning there is a non-zero ${\bf x}$ such that ${\bf Ax} = {\bf 0}$,
+it corresponds to code with its minimum distance equal to
+$0$. However, if $\eL$ has no non-trivial assignment satisfying all
+equations, then its minimum distance is definitely non-zero. In
+essence, there is a strong correlation between the (non-trivial)
+satisfiability of $\eL$ and the minimum distance of the respective
+linear code. We summarize our observations via the following
+observation.
+
+\begin{observation}
+For every homogeneous system of linear equations $\eL \equiv {\bf Ax = 0}$,
+the minimum distance of $\A$ is equal to the minimum fraction of 
+unsatisfied equations over all possible (non-trivial) assignments
+to variables.
+\end{observation}
+
+We extend the definition of tensoring of ${\bf x}$ to tensor of a
+linear system $\eL$ in a natural way. We define the tensor of $\eL =
+\{y_1 \ldots, y_m\}$ over $n$ Boolean valued variables as
+$\eL^{\otimes 2} : [m] \times [m] \rightarrow y_i \cdot
+y_j$. Additionally, we replace a bivariate variable $x_i \cdot x_j$
+with $x_{ij}$ and $x_i$ with $x_{ii}$. Hence, $\eL^{\otimes 2}$ has
+$m^2$ equations over $n^2$ Boolean variables.  
+
+
+To understand if the correspondence mentioned in the prequel also
+extends to the tensored system $\eL^{\otimes 2}$, we introduce direct
+product of the code \cite{ECC}. %from Dumer, Micciancio and Sudan \cite{DMS03}.
+\begin{definition}
+  For $i \in \{1, 2\}$, let $\A_i$ be a linear code generated by ${\bf
+    A_i} \in \mathbb{F}_2^{n_i \times m_i}$.  Then the direct product
+  of $\A_1$ and $\A_2$, denoted by $\A_1 \otimes \A_2$ is a code over
+  $\mathbb{F}_2$ of block length $m_1m_2$ and dimension
+  $n_1n_2$. Identifying the set $\mathbb{F}_2^{m_2 \times m_1}$ of all
+  $m_2 \times m_1$ matrices in the obvious way, the direct product
+  $\A_1 \otimes \A_2$ is defined as the set of all matrices $\{{\bf
+    A}_2^T {\bf XA}_1 | {\bf X} \in \mathbb{F}_2^{n_2 \times n_1} \}$
+  in $\mathbb{F}_2^{m_2 \times m_1}$.
+\end{definition}
+
+Notice that the codewords of $\A_1 \otimes \A_2$ are matrices whose
+rows are codewords of $\A_1$ and columns are codewords of $\A_2$. In
+our note, we will need the following fundamental property of direct
+product codes.
+
+\begin{claim} \label{distance} For linear codes $\A_1$ and $\A_2$ of
+  minimum distance $d_1$ and $d_2$, their direct product is a linear
+  code of distance $d_1d_2$.
+\end{claim}
+\noindent {\em Proof.} The linearity of $\A^{\otimes 2}$ follows from
+its definition.  First lets establish that any encoding of any
+non-zero ${\bf X}$ has at least $d^2$ non-zero entries.  Consider
+${\bf XA}$, whose rows are codewords of $\A$. Notice that each row (by
+virtue of being a codeword of $\A$) has at least $d_1$ non-zero
+entries. Thus, ${\bf XA}$ has at least $d$ non-zero columns.  Now,
+turn the attention towards the product ${\bf A^{T}XA}$. At least $d$
+columns of this matrix are non-zero and each of them has at least
+$d_2$ non-zero entries. Thus, any non-zero ${\bf X}$ has a weight of
+$d_1\cdot d_2$ or more.
+
+Now, to verify that the minimum distance is exactly $d_1 \cdot
+d_2$. Consider the set of vectors ${\bf x_i}$ such that ${\bf x_iA_i}$
+has exactly $d_1$ non-zero elements. Notice that the matrix $M = {\bf
+  A^{T}x_{2}^{T}x_1A_1}$ is a codeword of $\A^{\otimes
+  2}$. Rearranging the terms to ${\bf (x_{2}A)^{T}(x_1A)}$, we observe
+that $i$-th column is zero if the $i$-th coordinate of ${\bf x_1A_1}$
+is zero and analogously for $j$-th coordinate of ${\bf x_2A}$. Thus,
+$M$ is zero on all but $d_1 \cdot d_2$ entries. \qed
+
+
+
+\begin{corollary}
+  For any linear code $\A$ of minimum distance $d$, the code
+  $\A^{\otimes 2}$ is a linear code of distance $d^2$.
+\end{corollary}
+\noindent {\em Proof.} Follows from Claim \ref{distance}. \qed
+
+Observe that the tensored system $\eL^{\otimes 2}$ is exactly same as
+$({\bf A} \otimes {\bf A}) {\bf X} = {\bf 0}$, where ${\bf AX = 0}$ is
+$\eL^{\otimes 2}$.  In what follows, we further explore the properties
+of a tensored system.
+
+\paragraph{Affine Codes and Non-Homogeneous Systems.}
+
+In the above section, we restricted our focus to linear systems which
+have a trivial zero. We now shift gears to study a general class of
+linear systems which has no trivial zeros. The nice relationship that
+was pointed out in the last section is disturbed ever so slightly as
+the codewords no longer form a linear subspace. However, they are
+still closed under addition and scalar multiplication and thereby the
+codewords form an {\em affine subspace}. Thus, the results and
+observations made earlier do not follow as smoothly as they did.
+
+\noindent We begin by defining an {\em affine shift} of a linear
+code. For any vector ${\bf x} \in \mathbb{F}_2^{n}, \A \oplus {\bf x}$
+is defined as
+\[
+        \A \oplus {\bf x} = \{{\bf x + y ~|~ y} \in \A \}.
+\]
+
+Thus, an affine code $\A$ is defined by a tuple $({\bf A, x})$. From
+now on, we use the notation \A(${\bf A, x}$) to specify the code
+generated as per the above definition. We now establish a useful claim
+about the relation between an affine code and its corresponding linear
+code generated its generator matrix.
+
+\begin{claim} \label{ind}
+The minimum distance of $\A \oplus {\bf x}$ is equal to the minimum distance of $\A$.
+\end{claim}
+\noindent {\em Proof.} The key observation is that the Hamming
+distance of two vectors ${\bf y, z} \in {\mathbb{F}}_{2}^{n}$ remain
+unchanged when a fixed vector ${\bf x}$ is added to {\bf y,
+  z}. Specifically, say {\bf x, y} agree on a coordinate $i$, then
+they continue to remain so even after adding $z \in \mathbb{F}_2$ to
+both {\bf x, y}. \qed
+% A one line proof for this claim in $\mathbb{F}_2$ is as follows:
+% $d({\bf y, z}) = {\bf y \odot z}$, where $\odot$ is xor
+% operation. Thus, $d({\bf y + x, z + x}) = {\bf y \odot x \odot z
+%   \odot x}$, which is exactly ${\bf y \odot z}$. \qed
+
+
+\subsection{Extending Direct Products to Affine Codes}
+We, now, extend the definition of direct products of linear codes
+defined earlier to affine codes in a natural way. An affine code is
+determined by its generator matrix ${\bf A}$ and a displacement vector
+${\bf y}$. We define a matrix ${\bf B^{(n)}}, n \ge 0$ with $n$ rows
+and each of its rows being exactly equal to {\bf y}. The direct
+product of an affine code $\A$ is defined as follows.
+
+ \begin{definition}
+   Let $\A$ be an affine code generated by (${\bf A, y})$ $\in
+   \mathbb{F}_2^{n \times m}$.  Then the direct product of $\A$,
+   denoted by $\A^{\otimes 2}$ is a code over $\mathbb{F}_2$ of block
+   length $m^2$ and dimension $n^2$. Identifying the set
+   $\mathbb{F}_2^{m \times m}$ of all $m \times m$ matrices in the
+   obvious way, the direct product $\A$ is defined as the set of all
+   matrices $\{ {\bf A}^T \left({\bf X A + B^{(n)} } \right) + {\bf
+     B^{(m)^{T}}} | {\bf X} \in \mathbb{F}_2^{n \times n} \}$ in
+   $\mathbb{F}_2^{m \times m}$.
+ \end{definition}
+
+ \begin{claim}
+   The codewords of $\A ^{\otimes 2}$ are matrices whose rows and
+   columns are codewords of $\A$.
+ \end{claim} 
+ \noindent {\em Proof.}  \remark{Yet to be fixed.} Let us start with
+ the easier side -- the columns are codewords of $\A$. A quick glance
+ at the outer multiplication shows that the matrix ${\bf A^{T}}$. One
+ may treat ${\bf C}$ as a vector comprising of $[{\bf c_1 \ldots
+   c_m}]$, where each of ${\bf c_i}$ is a column vector of length
+ $n$. It is obvious that after the outer multiplication the columns of
+ the resulting matrix are encodings of ${\bf c_i}$'s minus the parity
+ shift. But, the addition with ${\bf B^{(m)^{T}}}$ serves the
+ purpose. Thus, the columns are codewords of $\A$.
+
+ For establishing that the rows are also the codewords of $\A$. By
+ arguments akin to previous paragraph, the inner multiplication and
+ addition with parity matrix results yields a matrix with each of the
+ rows is a encoding of the corresponding row of ${\bf X}$. In fact,
+ the resulting matrix is the matrix ${\bf C}$ mentioned in the
+ prequel. \qed
+
+
+
+\begin{claim}\label{fin}
+For any affine code $\A$ of minimum distance $d$, the code $\A^{\otimes 2}$ is an affine code of
+distance $d^2$
+\end{claim}
+\noindent{\em Proof.} The direct product operation can be rewritten aѕ
+${\bf A^T X A} + {\bf A^T B^{(n)}} + {\bf B^{(m)}}$.  Notice that only
+the first term varies and the rest is a constant that depends on the
+chosen code.  Thus, the latter part is an displacement vector of
+dimension $m^2$. By Claim \ref{ind}, the distance of the code is
+determined entirely by the term ${\bf A^T X A}$. Notice that distance
+of code generated by ${\bf A^T X A}$ is exactly $d^2$. For
+completeness, we prove it in subsequent paragraphs.  At the outset,
+notice that the code generated by ${\bf A^TXA}$ is linear. \qed
+
+
+\subsection{Tensoring Non-Homogeneous Systems}
+
+Let $\eL$ be a linear system with $m$ equations over $n$
+variables. Say, $\eL^{\otimes 2}$ is its tensored system. We now show
+the connection between $\eL^{\otimes 2}$ and the direct product of
+affine codes. Elaborating further, if $\eL \equiv {\bf Ax + y = 0}$,
+where ${\bf A}$ is the coefficient matrix of equations in $\eL$, ${\bf
+  y}$ is vector of dimension $m$ denoting the constant term in every
+equation.
+
+\begin{claim} \label{same} For any linear system $\eL \equiv {\bf Ax +
+    y} = {\bf 0}$ and its tensor $\eL^{\otimes 2}$, $i \in [m] \times
+  [m]$, the coefficient of the variable $x_{j}, j \in [n] \times [n]$,
+  is equal to the entry in the $i$-th row and $j$-th column of ${\bf
+    A}^{\otimes 2}$ and the constant term in equation $i$ is equal to
+  the $i$-th entry of {\bf y}$^{\otimes 2}$. Moreover, ${\bf
+    A}^{\otimes 2}\left({\bf X} + {\bf y}^{\otimes 2}\right)$ is
+  exactly ${\bf A^TXA} \oplus {\bf y}$.
+\end{claim}
+\noindent {\em Proof.} Essentially follows from the definitions of
+tensoring and direct product. \qed
+
+
+\begin{definition}[UNSAT($\eL$)] The UNSAT value of $\eL$ is
+defined to be minimum fraction of unsatisfied equations over 
+all possible assignments to the variables.
+\end{definition}
+
+%We state one useful fact about the UNSAT of $\eL \equiv {AX + y} = {\bf 0}$.
+
+\begin{proposition} \label{unsat}
+The following are equivalent.
+\begin{equation}
+                \mbox{UNSAT(}\eL\mbox{)} = \min_{{\bf x} \in \A} d({\bf x, y}) = \min_{{\bf x} \in \{0,1\}^n} d({\bf Ax + y, 0}) \label{UNSATEQ}
+\end{equation}
+\end{proposition}
+\noindent {\em Proof.} Recall that, UNSAT value of $\eL$ is the
+minimum Hamming weight of {\bf Ax +y} over all ${\bf x}$. This settles
+that the first and the last expression are the same. Now, subtract
+{\bf y} from both terms of $d$({\bf Ax + y, 0}). Lemma \ref{ind}
+establishes that an affine shift preserves Hamming distances. This
+inference establishes the truth of Equation \eqref{UNSATEQ}. \qed
+
+\begin{proposition}[Tensoring vs Solvability]\label{basic}
+For any linear system $\eL$ and its tensored system SAT($\eL^{\otimes 2}$),
+\[
+    \mbox{UNSAT}(\eL) = \rho \Rightarrow \mbox{UNSAT}(\eL^{\otimes 2})   \ge \rho^2  
+%\item UNSAT($\eL^{\otimes 2}$) $ > \rho \Rightarrow$ SAT($\eL$) $\ge \sqrt{\rho}$.  
+\]
+\end{proposition}
+\noindent {\em Proof.} We invoke Claims \ref{unsat} and \ref{fin}
+to establish the lemma. Say we are given an assignment $\pi : [n]
+\rightarrow \{0,1\}$ that satisfies ($1 - \rho$)-fraction of $\eL$, we
+claim that the assignment $\tilde{\pi} : [n] \times [n] \rightarrow
+\pi(i) \times \pi(j)$ satisfies at least ($1 - \rho^2$)-fraction of
+$\eL^{\otimes 2}$. It follows from the definition of $\eL^{\otimes 2}$
+that the only case an equation $\tilde{y}_{ij}$ from $\eL^{\otimes
+  2}$ is unsatisfied iff $\pi$ does not satisfy both $y_i$, $y_j$ in
+$\eL$. By a simple counting argument, we can check that there only
+$\rho^2$-fraction of such pairs. And thus the lemma. \qed \\
+
+
+\noindent Proposition \ref{basic} was essentially restating a folklore
+theorem. In this work, we would like to use these operations to
+construct a PCP. In any PCP theorem, the challenging part to infer
+some structure if we accept certain proof. Informally, this
+corresponds to establishing that if we accept a purported proof, we
+must be able to decode an assignment that (approximately) achieves the
+claims made by the purported proof. If we would like to use tensoring
+to any end in PCP's, we would need a certain converse of Proposition
+\ref{basic}. In other words, we would like to state something along
+the lines that the satisfiability of the tensored system is well
+behaved. We warm up via some nice, interesting observations.
+
+\begin{claim}\label{uni}
+  Let ${\bf x \in \{0,1\}^n}$ and denote ${\bf x}^{\otimes 2}$ by
+  ${\bf X}$. Every row of ${\bf X}$ is either the vector ${\bf x}$ or
+  {\bf 0}. Moreover, {\bf X} is symmetric.
+\end{claim}
+\noindent {\em Proof sketch.} Follows from the definition of $X$ and
+the fact that we are working with $\mathbb{F}_2$.  \qed
+
+ 
+\paragraph{Folding.} In what follows from now, we only focus on
+symmetric matrices ${\bf X}$. In the world of $\eL^{\otimes 2}$ this
+translates to restricting ourselves to assignments which are
+symmetric, that is, ${\bf X}_{ij} = {\bf X}_{ji}$. This can be easily
+enforced by reading an ${\bf X}_{ij}$ only after ordering of $[n]$ in
+a canonical fashion. In the world of PCP's, this can viewed as {\em
+  folding} the proof tables.
+
+
+\begin{lemma}\label{unique}
+  For every linear system $\eL$, $\eL \equiv \{y_1 \ldots y_m\}$, with
+  UNSAT value greater than $d$ and any two distinct $n$ dimensional
+  vectors ${\bf x},\ {\bf y}$ over $\mathbb{F}_2$, then the UNSAT
+  value of $\eL\left({\bf x} \oplus {\bf y}\right)$ must be at least
+  $(d+ 1)$.
+\end{lemma}
+\noindent {\em Proof sketch.} Since ${\bf x, y}$ are distinct, it is
+immediate that they do not satisfy the same subset of equations.  For
+otherwise, it follows from the linearity of constraints that the UNSAT
+$\eL\left({\bf x} \oplus {\bf y}\right)$ is $0$.  In other words,
+$\left({\bf x} \oplus {\bf y}\right)$ is a satisfying assignment to
+$\eL$ and this contradicts the hypothesis. Thus, the symmetric
+difference of the constraints satisfied by {\bf x, y} is
+non-zero. Hence,
+\[
+      \mid i\ \vert \ y_i\left({\bf x}\right) \ \vee y_i\left({\bf y}\right) \mid \ > \ \mid \ i \ \vert \  y_i\left({\bf x}\right) \ \wedge y_i\left({\bf y}\right) \mid \\
+\]
+This helps us conclude that the UNSAT value of $\eL\left({\bf x}
+  \oplus {\bf y}\right)$ must be at least ${d+ 1}$. \qed
+
+
+\begin{lemma}\label{decode1}
+  For every linear system $\eL$, $\eL \equiv {\bf Ax + y} = {\bf
+    0}\}$, with UNSAT value greater than $d$, if there is an ${\bf X}$
+  such that UNSAT$\left(\eL^{\otimes 2}\left({\bf X}\right)\right)$ is
+  less than $d \cdot (d+1)$, then ${\bf X}$ can be written
+  as ${\bf x}^{\otimes 2}$, for some unique ${\bf x} \in \{0,1\}^n$.
+\end{lemma}
+\noindent {\em Proof.} Before we proceed to prove this lemma. Observe
+that is sufficient to prove that ${\bf X}$ is composed of unique {\bf
+  x}. And this along with the fact that ${\bf X}$ is symmetric, allows
+us to invoke Claim \ref{uni} to conclude that ${\bf x}^{\otimes 2} =
+{\bf X}$. Hence, it suffices to show that every row in{\bf X} is
+either the zero vector or {\bf x}.
+
+We prove the contrapositive, that is, if ${\bf X}$ has two non-zero rows which
+are different then UNSAT$\left(\eL^{\otimes 2}\left({\bf
+      X}\right)\right)$ is at least $d \cdot \left(d +
+  1/m\right)$. Let {\bf X} = \Big\{${\bf \left(x_1\right)^T,
+  \left(x_2\right)^T \ldots \left(x_n\right)^n}$\Big\}, where for each
+$i$, $x_i$ is an $n$ dimensional vector in $\{0,1\}$. Recall Claim
+\ref{same} and observe that the operation $\eL^{\otimes 2}\left({\bf
+    X} \right)$ can be rewritten as $\left({\bf A^T} \cdot \left({\bf
+      X A} + {\bf y}\right) + {\bf y} \right)$. So, there are two
+matrix multiplications {\bf X} is multiplied by $A$, followed by
+addition with ${\bf y}$ and this is in-turn multiplied by ${\bf
+  A^T}$,added to ${\bf y}$.
+
+Lets begin analyzing step by step. In the first multiplication(${\bf X
+  \cdot A}$), we are essentially evaluating $\eL$ over each vector
+${\bf x_i}$ of {\bf X}. By hypothesis there are two distinct indices
+$i,j$ such that ${\bf x_i \ne x_j}$ and $\eL$ has an UNSAT value is
+greater than $d$.  We now invoke Lemma \ref{unique} to infer that
+$\left({\bf A X} + {\bf y}\right)$, denoted by $\tilde{\bf X}$ has
+least $(d+1)$-fraction of constraints that are not satisfied.
+Alternatively, at least $\left(d +1\right)$ columns of $\tilde{\bf X}$
+are non-zero (recall that, a constraint evaluates to $1$ if it is
+false).
+
+In the ultimate step of operation, $\tilde{\bf X}$ is pre-multiplied
+by ${\bf A^T}$ and then added to ${\bf y}$ to obtain $\widehat{\bf X}$. In
+other words, the columns of $\tilde{\bf X}$ are used as assignment
+vectors to evaluate $\eL$ again. We use the fact that $\eL$ has an
+UNSAT value greater than $d$ to infer that at least $d+1$ columns of
+$\widehat{\bf X}$ have at least $d$ fraction of entries in $\widehat{\bf X}$
+are $1$'s. And hence the lemma.  \qed \\
+
+
+\noindent In what follows, we will establish that it is possible to
+decode an assignment $\pi$ for $\eL$ from an assignment $\Pi$ of
+$\eL^{\otimes 2}$ under the guarantee that the UNSAT($\eL^{\otimes
+  2}$) exceeds a certain amount.
+
+
+\begin{lemma}[Tensor Decoding Lemma]\label{decode}
+  For every ${\bf X}$ such that the UNSAT of $\eL^{\otimes
+    2}\left({\bf X}\right)$ is less than $d \cdot (d+1)$, there is a
+  unique ${\bf x}$ such that the UNSAT$\left(\eL\right) = d$.
+\end{lemma}
+\noindent {\em Proof.} We give a proof by contradiction. Suppose that
+the hypothesis is false. Say there is no unique ${\bf x}$ such that
+${\bf x}^{\otimes 2} = {\bf X}$ and yet UNSAT($\eL^{\oplus 2}$) $\ < \
+d \cdot(d+1)$, this contradicts Lemma \ref{decode1}.  And this
+completes the lemma. \qed \\
+
+
+
+\noindent A comment on the above lemma is due. Lemma \ref{decode}
+implies that if a tensored system satisfies a certain fraction of
+equations, then the tensored assignment is constructed from a unique
+assignment of $\eL$.  Alternatively, rephrasing it in the language of
+PCPs, if the verifier accepts a tensored with sufficiently high
+probability, it necessarily means that the tensored proof is obtained
+by tensoring a unique assignment to untensored system.
+
+The key idea was that we set up ourselves such that we operate in the
+{\em unique decodability regime} of the code generated by$A^{\otimes
+  2}$. Specifically, we used that fact that the assignment fucntion
+was symmetric and its UNSAT value is strictly less than $d \cdot (d +
+1)$.
+
+
+\begin{corollary}[Tensor Structure Lemma]
+  For If a tensored verifier PCP system accepts a proof $\Pi$ with
+  probability at least $(1 - (d^2 +d))$, then could construct ${\pi}$
+  that would be accepted by the original verifier with probability at
+  least $1 - d$.
+\end{corollary}
+
+
+%\eat{
+We now extend the definition of tensoring to $k$ in a natural way.
+\begin{definition}[$k$ Rounds of Tensoring]
+  Given a linear system $\eL$, we define $\eL^{\otimes k}$ iteratively
+  as $\eL^{\otimes k} = \eL^{\otimes k-1} \otimes \eL$.
+\end{definition}
+
+
+
+
+
+\begin{proposition}\label{nearly-there}
+  For every ${\bf A,\ y}$ and ${\bf x} \ne \tilde{\bf x}$, ${\bf
+    Ax\cdot y}^T + {\bf y}$({\bf Ax})$^T$ and ${\bf A} \tilde{\bf x}\cdot
+    {\bf y}^T$+ {\bf y}({\bf A}$\tilde{\bf x}$)$^T$ differ in at least $y
+  \cdot$ d($\A$) - d($\A$)$^2$ locations.
+\end{proposition}
+\noindent {\em Proof.}  We invoke Proposition \ref{different} between
+the rows of ${\bf Ax\cdot y}^T$ and ${\bf A} \tilde{\bf x}\cdot {\bf
+  y}^T$ (the first terms) to conclude they differ in no fewer than $y
+\cdot$ d($\A$) locations. Along similar lines, we apply that very
+argument over the columns of {\bf y}({\bf Ax})$^T$ and {\bf y}({\bf
+  A}$\tilde{\bf x}$)$^T$ (the second terms) to conclude they differ
+across $d($\A$)$ columns and each of them has a weight at least $y$.
+To conclude the argument, we observe that the rows of first terms and
+columns of second terms can share at most d($\A$)$^2$ entries. Thus,
+the two entries ${\bf Ax\cdot y}^T + {\bf y}$({\bf Ax})$^T$ and ${\bf
+  A} \tilde{\bf x}\cdot {\bf y}^T + {\bf y}$({\bf A}$\tilde{\bf
+  x}$)$^T$ differ on at least $y \cdot$ d($\A$) - d($\A$)$^2$
+entries. \qed
+
+
+\begin{lemma}\label{towards}
+  For every $\eL$, ${\bf x}$ such that $\eL({\bf x})$ is $d$ and $X
+  = x^{\otimes 2}$, ${\bf x} \ne \tilde{\bf x}$ the Hamming weight of
+\begin{align}\label{lower}
+{\bf AXA}^T + {\bf y}\left({\bf A} \tilde{\bf x}\right)^T + \left({\bf A} \tilde{\bf x} + {\bf y} \right)\cdot {\bf y}^T
+\end{align}
+is no less than $d^2$ + $y \cdot$ d($\A$) - d($\A$)$^2$.
+\end{lemma}
+\noindent {\em Proof.} Because $\eL$({\bf x} has an UNSAT of $d$,
+Lemma \ref{basic} allows us to infer that Equation \eqref{heavy} has a
+Hamming weight of exactly $d^2$. Now observe that, the first two terms
+of Equations \eqref{heavy} and \eqref{lower} remain unchanged. So to
+prove the claim it suffices to focus of the penultimate terms of the
+aforementioned equations. Recall Proposition \ref{nearly-there} to
+establish that the Hamming difference between ${\bf Ax\cdot y}^T +
+{\bf y}$({\bf Ax})$^T$ and ${\bf A} \tilde{\bf x}\cdot {\bf y}^T$+
+{\bf y}({\bf A}$\tilde{\bf x}$)$^T$ is at least $y \cdot$ d($\A$) -
+d($\A$)$^2$.  This lets us conclude that using a different ${\bf x}$
+is at least ($y \cdot$ d($\A$) - d($\A$)$^2$)-far from $d^2$. Hence,
+the weight of \eqref{lower} is either $d^2$ + $y \cdot$ d($\A$) -
+d($\A$)$^2$ or $d^2$ - $y \cdot$ d($\A$) - d($\A$)$^2$..  At this
+juncture, we invoke Lemma \ref{converse} to rule out the latter case.
+Therefore, the Lemma is good. \qed
+
+
+
+$\{0,1\}$ 
+}
+
+
+\eat{
+\begin{lemma}\label{baby}
+  For any linear system $\eL, \delta < 1 - d$ and every {\bf X} such
+  that the Hamming weight of
+  \[ {\bf AXA}^T + {\bf y}{\bf Ax}^T + {\bf Ax}{\bf y}^T + {\bf y}{\bf
+    y}^T
+\]
+is strictly less than $d \cdot (d + \delta)$, then it follows that
+the UNSAT of $\eL$({\bf x}) is strictly less than ($d +\delta$). Here,
+{\bf x} denotes the diagonal vector of {\bf X}.
+
+\end{lemma}
+\noindent {\em Proof.} We prove the contrapositive. Suppose, UNSAT
+$\eL$({\bf x}) is $d + \delta$. We invoke Corollary \ref{babydecode}
+on {\bf x} with wt$\left({\bf Ax} + {\bf y}\right) = (d + \delta)$ to
+conclude that the Hamming weight of {\bf AXA}$^T$ + {\bf y}{\bf
+  Ax}$^T$ + {\bf Ax}{\bf y}$^T$ + {\bf y}{\bf y}$^T$ is at least $d
+\cdot (d + \delta)$. This contradicts our Hypothesis and hence, the
+lemma is valid. \qed
+
+
+The above lemma leaves does not give any guarantees when the UNSAT is
+in the range $\left(d^2, d^2 + d\right)$ and also, on the structure of
+{\bf X}. We now address this by showing that if {\bf X} has an UNSAT
+in that regime, then the Hamming distance between {\bf X} ${\bf
+  x}^{\otimes 2}$ is at most $\delta$.  } 

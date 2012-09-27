@@ -1,0 +1,194 @@
+\chapter{Introduction}
+%\section{Introduction}
+\noindent The Probabilistically Checkable Proofs (PCP) Theorem shows
+how to efficiently transform any mathematical proof to a format that
+can be probabilistically verified by reading only a constant number of
+locations. A PCP verifier has a number of parameters including the
+number of queries, the randomness, the alphabet, and the error
+parameters. There can be two types of errors: the verifier may reject
+given a correct statement and proof (completeness error), or it may
+accept given an incorrect statement (soundness error).  If the
+verifier never rejects when given a correct statement and proof, we
+say that it has {\em perfect completeness}.
+
+The basic PCP theorem was established through the works of Arora and
+Safra \cite{AS}; and Arora et al. \cite{ALMSS}. They relied on a series of previous works including those of
+Feige et al. \cite{FGLSS}; Lund et al. \cite{LFKN}; Babai et
+al. \cite{BFL,BFLS}; Rubinfeld and Sudan \cite{RuSu}. The PCP Theorem
+states that every language in ${\sf {\sf NP}}$ has a verifier that on input
+size $n$, uses $O(\log n)$ random bits, makes two queries to a proof
+over constant sized-alphabet; where the answer to the first query
+determines at most one satisfying answer to the second query (this is
+known as the ``projection property''). The verifier always accepts a
+correct proof, and rejects any incorrect statement with a constant
+probability.  The PCP theorem is the basis of essentially all hardness
+of approximation results known today. For more information about it,
+see \cite{D}.
+
+Decreasing the error in PCP is the subject of considerable
+research. This is motivated both by the intrinsic interest in
+trustworthy verifiers, and by the use of PCP for hardness of
+approximation, in which PCPs with low error play a crucial role.
+Since there are PCP constructions with perfect completness, most of
+the work concentrated on decreasing the soundness
+error~\cite{Raz,RaSa,ArSu,DFKRS,MR08,IKW,DM10}.
+
+For certain verifiers, one cannot achieve perfect completeness.  One
+example is unique verifiers, where the verifier makes two queries, and
+the answer to any one query determines uniquely a satisfying answer to
+the other query. Another example is linear verifiers, where the
+alphabet is a finite field, and the verifier performs linear tests
+over the field.  Both types of verifiers were discovered to be very
+useful for hardness of approximation.  The first gives rise to the
+host of UGC-based (UGC stands for Unique Games Conjecture~\cite{Khot};
+see the survey~\cite{K-Survey}) hardness results we know today. The
+second allows using the Hadamard code in lieu of the long
+code~\cite{Khot01}.
+
+In this paper, we construct the first linear verifier with
+polynomially small completeness error:
+\begin{theorem}\label{t:main}
+There is a constant $\alpha >0$, such that every ${\sf {\sf NP}}$ language
+$L$ has a linear PCP verifier with the projection property, such that
+on input size $n$, the verifier uses $O(\log n)$ random bits, queries
+a proof over a constant-size alphabet, has completeness error
+$1/n^{\alpha}$ and has soundness error $0.9$.
+\end{theorem}
+Given this theorem, it is possible to apply a soundness amplification
+technique and get a linear verifier with low soundness error in
+addition to low completeness error.
+For instance,
+using the best soundness amplification technique
+known today for verifiers with the projection property~\cite{MR08}
+(which can be shown to preserve linearity), we deduce a statement
+similar to Theorem~\ref{t:main} but with lower, poly-logarithmically
+small, soundness error:
+\begin{corollary}\label{c:main}
+There is a constant $\alpha >0$, such that every ${\sf {\sf NP}}$ language
+$L$ has a linear PCP verifier with the projection property, such that
+on input size $n$, the verifier uses $O(\log n)$ random bits, queries
+a proof over $poly(n)$-size alphabet, has completeness error
+$1/n^{\alpha}$ and has soundness error $1/(\log n)^{\alpha}$.
+\end{corollary}
+We note that the alphabet of the proof must grow to
+allow lower soundness error, and this is the reason for the difference
+in the alphabet size between Theorem~\ref{t:main} and
+Corollary~\ref{c:main}.
+
+Ideally, one could hope for polynomially-small soundness error in Corollary~\ref{c:main}. The
+logarithmically small soundness error is due to the technique of
+\cite{MR08}. We believe (see \cite{M-proj}) that the soundness error of PCPs with the projection property could be polynomially small.
+Specifically, the soundness error in Corollary~\ref{c:main} could be replaced by $1/n^{\alpha}$, if the following conjecture holds:
+
+\begin{conjecture}[Soundness amplification for linear projection]\label{c:soundness}
+There exists $\beta>0$, such that for every $n$ and $\varepsilon = \varepsilon(n)\geq 1/n^{\beta}$,
+a linear PCP verifier with the projection property that uses $r$ random bits, queries a proof over alphabet $\Sigma$, has completeness error $\delta$, and has soundness error $0.9$ can be efficiently transformed into a linear PCP verifier with the projection property that uses $(1+o(1))r+O(\log (1/\varepsilon))$ random bits, queries a proof over alphabet $\Sigma'$, $|\Sigma'|\leq poly(1/\varepsilon)$, has completeness error $O(\log(1/\varepsilon))\cdot\delta$, and has soundness error $\varepsilon$. 
+\end{conjecture} 
+
+\section{Application to The Threshold Behavior of Approximation}
+
+The work of H\aa stad~\cite{Has97}, relying on previous works by Raz~\cite{Raz} and Bellare, Goldreich and Sudan~\cite{BGS}, showed that many optimization problems $\Pi$ undergo a phase transition in their approximability: up to some approximation factor $\alpha_{\Pi}$, they can be efficiently approximated, while for any $\varepsilon > 0$, approximation better than $\alpha_{\Pi} + \varepsilon$ (or $\alpha_{\Pi}-\varepsilon$ for minimization problems) is ${\sf {\sf NP}}$-hard.
+
+A subsequent work by Moshkovitz and Raz~\cite{MR08} strengthened this result, establishing that for the problems H\aa stad considered: (1) The threshold is sharp, and the phase transition occurs in a window of width $\varepsilon = o(1)$; (2) Beyond the threshold window, the problems are not only {\sf {\sf NP}}-hard, but in fact have a similar time lower bound as (exact) \textsc{Sat}, which is conjectured to require exponential time (Previously, if \textsc{Sat} required time $T$, one could only show lower bounds of the form $T^{\Omega(1/\log(1/\varepsilon))}$ for $\Pi$).
+
+The work of Moshkovitz and Raz did not concentrate on estimating the width $\varepsilon$ of the threshold window, only on showing that it goes down to $0$ with $n$. A natural question is to understand what the width of the threshold window is. This question is further motivated by the recent realization that many optimization problems have non-trivial, sub-exponential time approximation algorithms around their approximation threshold. Unique games~\cite{ABS} is one example, and \textsc{Set-Cover}~\cite{CKW} and \textsc{Max-Clique} are other examples. Understanding for which approximation factors we can expect such algorithms is important.
+
+A different analogy can be made to the research of random graphs, which is another area where phase transitions and sharp thresholds arise. Recent exploration of the threshold window there (see, e.g., \cite{BBCKW}, and many others) revealed surprisingly interesting behavior.
+We wonder whether similarly interesting behavior could be obtained for approximation problems.
+
+For convenience, we concentrate on two of the problems that were considered by H\aa stad,
+\textsc{Max-3Lin} and \textsc{Max-3Sat}, and use Corollary~\ref{c:main} to study their approximability around their thresholds,
+${1}/{2}$ and ${7}/{8}$, respectively.  For both problems, a simple
+random assignment algorithm gives an approximation up to the
+threshold. Moreover, for any constant larger than the threshold, H\aa
+stad proved that the problems become ${\sf {\sf NP}}$-hard to
+approximate~\cite{Has97}. Moshkovitz and Raz refined the result to
+show that for an additive $1/(\log\log n)^{\alpha}$ beyond the
+threshold ($\alpha>0$ is some constant), the problem has a
+nearly-exponential time lower bound, assuming \textsc{Sat} requires
+exponential time~\cite{MR08}. For practical values of $n$, the term $1/(\log\log n)^{\alpha}$ is quite large.
+
+We prove that the window of efficient approximability is in fact much
+narrower than $1/(\log\log n)^{\alpha}$:
+\begin{theorem} There is a constant $\alpha >0$ for which 
+it is ${\sf {\sf NP}}$-hard to approximate \textsc{Max-3Lin} to within a
+factor better than $1/2 + 1/(\log n)^{\alpha}$, and \textsc{Max-3Sat}
+to within a factor better than $7/8 + 1/(\log n)^{\alpha}$.
+\end{theorem}
+Moreover, if Conjecture~\ref{c:soundness} holds, then our methods yield hardness
+for \textsc{Max-3Lin} and \textsc{Max-3Sat} up to $1/2 + 1/n^{\alpha}$
+and $1/2 + 1/n^{\alpha}$ for some constant $\alpha > 0$, respectively.
+Up to the constant $\alpha$, this matches the polynomial-time
+approximation of $1/2 + 1/\sqrt{n}$ achieved by H{\aa}stad for
+\textsc{Max-3Lin} \cite{Has00}.
+
+\section{Application to \textsc{Min-3Lin-Deletion} and \textsc{Nearest-Codeword-Problem}}
+
+\textsc{Min-3Lin-Deletion} is the problem in which, given a system of linear equations over $GF(2)$, where each equation depends on three variables, the task is to find the minimum number of equations that their removal leaves a fully satisfiable system.
+
+\textsc{Nearest-Codeword-Problem} is the problem in which, given the generator matrix of a binary linear code, and a purported codeword, the task is to find the Hamming distance of the purported codeword from the code. 
+
+What both problems have in common is that their approximation factor is dominated by the completeness parameter, rather than the soundness parameter. Specifically, if we construct \textsc{Min-3Lin-Deletion} instances in which there is an $\alpha$ fraction of equations that could be removed to make the system satisfiable, while we argue that it {\sf NP}-hard to find even half of the equations whose removal would suffice, then we prove the hardness of approximation of the problem up to a factor $1/2\alpha$. Similarly, if we construct \textsc{Nearest-Codeword-Problem} instances in which the purported codeword is $\alpha$-close to the code, while we argue that it {\sf NP}-hard to find an actual codeword that is $2/3$-close to the purported codeword, then we prove the hardness of approximation of the problem up to a factor $2/3\alpha$.
+In both cases, the factor is essentially determined by $\alpha$. 
+
+Hence, our completeness amplification technique in Corollary~\ref{c:main} yields the first polynomially large hardness of approximation factors for \textsc{Min-3Lin-Deletion} and \textsc{Nearest-Codeword-Problem}. This is optimal for these problems, up to the constant in the exponent.
+
+\begin{theorem} There is a constant $\beta >0$ for which 
+it is ${\sf {\sf NP}}$-hard to approximate \textsc{Min-3Lin-Deletion} and \textsc{Nearest-Codeword-Problem} on instances of size $n$
+to within a factor better than $1/n^{\beta}$.
+\end{theorem}
+
+Similar results can be achieved for any other problem in which the completeness error dominates the approximation factor. 
+
+Previously, 
+Arora {\em et al.}~\cite{ABSS} established {\sf NP}-hardness of approximation for \textsc{Nearest-Codeword} to within any constant, and hardness of
+$2^{\log^{(1-\epsilon)}n}$ for any $\epsilon > 0$ under {\sf NP}$
+\nsubseteq {\sf DTIME}(2^{\sf poly log})$. This was improved to
+inapproximability to within $n^{1/{\cal O}(\log\log n)}$ under {\sf P} $\neq$ {\sf NP} by Dinur {\em et al.}~\cite{DKRS}. On the
+algorithmic front, Berman and Karpinski~\cite{BK} gave a randomized
+algorithm for $\epsilon\cdot n/\log n$ approximation, for any fixed $\epsilon >0$ and $\epsilon \cdot n$ approximation in deterministic time.
+
+For \textsc{Min-3Lin-Deletion}, the best hardness of approximation was to within polylogarithmic factors under the assumption that {\sf NP} does not have quasi-polynomial time algorithms~\cite{KP}. We remark that in \cite{KP}, this result is used to establish improved hardness results for \textsc{Max-Clique} and \textsc{Chromatic-Number}, but our improvement for \textsc{Min-3Lin-Deletion} does not yield an improvement for the latter.
+
+\eat{\subsection{Application to \textsc{Max-Clique} and \textsc{Chromatic-Number}}
+
+A clique in an undirected graph is a subset of the vertices such that every two vertices in the set are connected to each other. The \textsc{Max-Clique} problem is to find, given an undirected graph, a clique of maximum size.
+
+A $k$-coloring of an undirected graph is an assignment of ``colors'' $1,\ldots,k$ to the vertices of the graph, so no edge has two endpoints of the same color. The \textsc{Chromatic-Number} problem is to find, given an undirected graph, the smallest number of colors $k$ such that the graph can be $k$-colored.
+
+Both \textsc{Max-Clique} and \textsc{Chromatic-Number} are fundamental {\sf NP}-hard  combinatorial optimization problems. The best efficient approximation algorithm for \textsc{Max-Clique} is by Feige, and for a graph on $n$ vertices, it gives an approximation factor of $O(n/(\log n)^{O(1)})$ (the $(\log n)^{O(1)}$ is $(\log\log n)^2/\log^3 n$)~\cite{Feige-Clique}. The first inapproximability result for \textsc{Max-Clique} was by Feige, Goldwasser, Lov\'{a}sz, Safra and Szegedy, in the paper that motivated the proof of the PCP Theorem~\cite{FGLSS}.
+It was followed by a long line of work improving the inapproximability factor and the assumptions on which it relies. The current record in terms of the factor is by Khot and Ponnuswami, $n/2^{(\log n)^{3/4+\gamma}}$ for any constant $\gamma > 0$. The result is under the assumption that {\sf NP} does not have randomized quasi-polynomial time algorithms~\cite{KP}. Assuming $P\neq {\sf NP}$, H\aa stad (with a derandomization by Zuckerman~\cite{Zuc-ext}) ruled out efficient $n^{1-\epsilon}$-approximation of \textsc{Max-Clique} for any $\epsilon > 0$~\cite{HasB}. The hardness results for \textsc{Chromatic-Number} are similar to the hardness results for \textsc{Max-Clique}, and employ a technique by Feige and Kilian~\cite{FeKi}.
+
+The hardness result for \textsc{Max-Clique} (see \cite{Khot01} for reference) uses a hardness result for \textsc{Min-3Lin-Deletion} as a starting point. Then, soundness amplification is used together with a technique by Sudan and Trevisan~\cite{ST0} and Samorodnitsky and Trevisan~\cite{ST}.
+}
+
+\section{The Completeness Amplification of Khot and Ponnuswami}
+
+The only previous work on completeness amplification that the authors
+are aware of is by Khot and Ponnuswami~\cite{KP}. They construct linear PCP
+verifiers with completeness error $2^{-\Omega(\sqrt{\log n})}$ and large blow-up $2^{(\log n)^{O(1)}}$ (which corresponds to poly-logarithmic randomness), and
+apply their construction to yield stronger hardness of approximation
+results for \textsc{Min-3Lin-Deletion}, \textsc{Max-Clique} and \textsc{Chromatic-Number}. 
+
+Next we describe the technique of Khot and Ponnuswami, which is the basis of our results.
+Suppose that we have a PCP reduction that given a \textsc{Sat} instance $\varphi$, produces a system $\mathcal{L}$ of linear equations (which is equivalent to a linear verifier). If $\varphi$ is satisfiable, then there is an assignment to the variables of the linear system that satisfies all the equations, except perhaps of a $\delta$ fraction. On the other hand, if $\varphi$ is not satisfiable, then any assignment to the variables of the linear system satisfies at most $s$ fraction of the equations. Now, suppose that we want to decrease $\delta$, the completeness error. 
+A natural way to do that would be to consider new equations over the same variables. Each new equation takes two equations from $\mathcal{L}$, say, $e_1 = 0$ and $e_2 =0$, and is defined as $e_1\cdot e_2 = 0$. Since the new equation is not satisfied only if both $e_1=0$ and $e_2 = 0$ are not satisfied,
+the new system has parameters $\delta^2$ and $(1-s)^2$, instead of $\delta$ and $1-s$, respectively. This simple transformation has one major caveat: it produces quadratic equations instead of linear equations. What Khot and Ponnuswami suggest is to linearize the system, by replacing products of the form $x_i x_j$ with a new variable $x_{i,j}$. This is equivalent to {\em tensoring} the system.
+
+Khot and Ponnuswami argue that tensoring has a similar effect on the parameters of the system as taking quadratic products. They move on to handle two side-effects: (1) The soundness error increases; (2) The number of variables each equation depends on increases. They solve both problems using standard PCP techniques: (1) is solved by soundness amplification and (2) is solved by composition. These operations are applied iteratively to achieve a low completeness error.
+
+What Khot and Ponnuswami do not solve is the effect tensoring has on the size of the system: the number of variables squares. This is the reason that their reduction has a large blow-up. 
+
+A similar blow-up occurs with the parallel repetition theorem of Raz~\cite{Raz}. The purpose of the latter is to decrease the soundness error (and not the completeness error), while keeping each equation dependent on two variables (and not increasing the number of variables per equation). Even though parallel repetition requires a much more challenging analysis, the two constructions are similar in that both rely on tensoring of the original system. Similarly, both construction inherently raise the number of variables to a power that depends inversely on the desired error, and thus both incur a large blow-up.
+
+\section{Our Completeness Amplification}
+
+In this work we develop a completeness amplification technique that does not involve large blow-ups. Our idea is to apply the completeness amplification technique of Khot and Ponnuswami, but only on constant-size instances. This allows us to iterate their technique a logarithmic number of times, and obtain polynomially small completeness error, without introducing a large blow-up.
+
+We then compose this construction as an inner PCP together with an outer PCP that has perfect completeness, resulting in: (1) The tests are linear as those of the inner PCP; (2) The completeness error is the sum of the outer and inner completeness errors, which in this case equals the inner completeness error; (3) The blow-up is inherited from both the outer and inner constructions, but the blow-up of the outer construction can be made low using existing PCP technology, while the blow-up of the inner can be low if we tune the number of iterations accordingly.
+%(4) The soundness error is the sum of the outer and inner soundness errors, %where both can be low using existing PCP techniques; (5) The number of %queries...
+
+One subtlety is that an inner construction in PCP composition is used, not only to verify that a satisfying assignment exists, but also to decode information about the satisfying assignment. This information is then used to check consistency between different inner assignments.
+The need in decoding requires us to prove that any assignment that satisfies the maximum number of equations of the tensored system has, as a sub-assignment, an assignment to the original variables that satisfies the maximum number of equations of the original system.
+
+In contrast, attempts to get a decoding version of parallel repetition were shown to fail~\cite{DG10} (At the same time, parallel repetition with additional consistency checks does have a decoding version~\cite{IKW}. However, our version of tensoring, which preserves linearity, is analogous to the basic parallel repetition, without consistency checks).

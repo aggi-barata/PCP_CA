@@ -1,0 +1,124 @@
+\chapter{Nearest Codeword Problem} 
+
+The Nearest Codeword Problem (NCP) (also known as the maximum
+likelihood decoding problem) is the following.  The input instance
+consists of a generator matrix ${\bf A} \in \mathbb{F}_2^{k \times n}$ and
+a received word ${\bf x} \in \mathbb{F}^n_2$ and the goal is to find
+the nearest codeword ${\bf y} \in \A$ to {\bf x}. One relaxation that
+received attention was estimating the minimum error weight to the
+nearest codeword. In other words, the distance $d({\bf x, y})$ to the
+nearest codeword, without necessarily finding the codeword {\bf y}.
+
+\paragraph{Prior Results.} Berlekamp, McEliece and van Tilborg
+\cite{BMT} showed that even the relaxed version is {\sf
+  NP}-hard. Arora {\em et al.} \cite{ABSS} established that the error
+weight is hard to approximate to any constant is {\sf NP}-hard and
+$2^{\log^{(1-\epsilon)}n}$ for any $\epsilon > 0$ under ${\sf NP}
+\nsubseteq {\sf DTIME}(2^{\sf poly log})$. This was improved to
+inapproximability to within $n^{1/{\cal O}(\log\log n)}$ under ${\sf
+  P} \ne {\sf NP}$ by Dinur {\em et al.} \cite{DKRS}. On the
+algorithmic front, Berman and Karpinski \cite{BK} gave a randomized
+algorithm for $\epsilon\cdot n/\log n$ approximation, for any fixed $\epsilon >0$
+and $\epsilon \cdot n$ approximation in deterministic time.
+
+
+In the gap version of nearest codeword problem (NCP), we are given a
+linear code {$\A$}, target vector {\bf v} and an integer $t$ with a
+promise that either the Hamming distance of {\bf v} to $\A$ is {\em
+  less than} $\gamma \cdot t$ or greater than $t$, one must decide
+which of them is true. In this section, we show that for the nearest
+codeword problem of any linear code over a {\em binary} alphabet
+cannot be approximated within $n^\alpha$, for some $\alpha > 0$ unless
+{\sf P = NP}. Before we establish the theorems, we shall define the
+corresponding promise problems which capture the hardness of
+approximating the aforementioned problems within a factor of $\gamma$.
+
+\begin{definition}[Nearest Codeword Problem] For $\gamma \ge 1$ and $t
+  < 1$, an instance of {\sc GapNcp}$_\gamma$ is a triplet $({\bf A},
+  {\bf v}, t)$, where ${\bf A} \in \mathbb{F}_2^{k\times n}$, ${\bf v}
+  \in \mathbb{F}_2^{n}$ and $t \in \mathbb{Z}^+$, such that
+ \begin{itemize}
+\item ({\bf A},d) is a {\sf Yes} instance if $d(\A, {\bf v}) \le \gamma t$.
+\item ({\bf A},d) is a {\sf No} instance if $d(\A, {\bf v}) > t$.
+ \end{itemize}
+\end{definition}
+
+\eat{
+\begin{theorem}
+  There exists an absolute constant $\beta > 0$ such that for every
+  $\gamma < n^\beta$ it is {\sf NP}-hard to decide {\sc
+    GapNcp}$_\gamma$.
+\end{theorem}
+}
+
+We begin by recollecting Corollary \ref{3delpoly}.
+
+\begin{corollary}[{\sc Min-3Lin-Deletion Hardness}]
+  For some $\alpha, \beta > 0$ and {\sc Max-3Lin-Deletion} ${\cal D}$
+  instance of size $n$ it is {\sf NP}-hard to distinguish between the
+  following two cases.
+\begin{itemize}
+\item There exists a $\left(\frac{1}{n^\alpha}\right)$-fraction of equations
+  whose removal makes ${\cal D}$ satisfiable.
+\item One needs to delete more than $\beta$-fraction of the equations
+  in ${\cal D}$ to make it satisfiable.
+\end{itemize}
+\end{corollary}
+
+\noindent We are now ready to prove the hardness of approximation of
+{\sc GapNcp}$_{n^{-\beta}}$.
+
+\begin{theorem}
+  There exists an absolute constant $\beta > 0$ such that it is {\sf
+    NP}-hard to approximate {\sc GapNcp}$_{n^{-\beta}}$.
+\end{theorem}
+\noindent {\em Proof.} We reduce {\sc
+  Min-3Lin-Deletion}$_{\frac{1}{n^{\beta}}, \frac{1}{2}}$ to {\sc
+  {Gap}{Ncp}}$_{n^{-\beta}}$.  Given an instance $\eL \equiv {\bf AX +
+  y = 0}$ of {\sc Min-3LinDel}$_{\frac{1}{n^{\beta}}, \frac{1}{2}}$,
+we use the $n^{-\beta}$ approximation scheme for {\sc GapNcp}
+available to us on $\left({\bf A, y}, 1/2\right)$.
+\begin{itemize}
+\item {\sf Yes Case:} Here the deletion value of the instance is less
+  than $1/n^{\beta}$. Thus, number of unsatisfied equations is at most
+  $n^{-\beta}$. So, Hamming weight of {\bf AX + y} is at most $
+  n^{-\beta}$. Invoking Proposition \ref{unsat}, we infer that the
+  Hamming distance between (${\bf AX, y}$) is at most
+  $n^{-\beta}$. Since, we have an access to ${\cal
+    O}\left(n^{-\beta}\right)$ approximation algorithm to estimate the
+  nearest codeword of any linear code. For the parameters, the
+  algorithm must accept (${\bf AX, y}, 1/2$).
+
+\item {\sf No Case:} In this case, more than $1/2$ constraints are
+ left unsatisfied by every assignment. Thus, the Hamming distance between
+  (${\bf AX, y}$) is strictly greater than $1/2$ and the approximation
+  algorithm is forced to reject the instance (${\bf AX, y}, 1/2$).
+\end{itemize}
+This completes the reduction. \qed
+
+
+
+
+
+
+
+
+
+
+
+
+
+%--------------------------
+
+
+\eat{
+\begin{definition}[Minimum Distance Problem] For $\gamma \ge 1$,
+an instance of ${\sc GapDist}_\gamma$ is a pair $({\bf A}, d)$,
+where ${\bf A} \in \mathbb{F}_2^{k\times n}$ and $d \in \mathbb{Z}^+$,
+ such that
+ \begin{itemize}
+\item ({\bf A},d) is a {\sf Yes} instance if $d(\A) \le \gamma d$.
+\item ({\bf A},d) is a {\sf No} instance if $d(\A) > d$.
+ \end{itemize}
+\end{definition}
+}

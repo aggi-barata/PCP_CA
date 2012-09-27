@@ -1,0 +1,231 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{BSGH{\etalchar{+}}06}
+
+\bibitem[AB09]{AB}
+S.~Arora and B.~Barak.
+\newblock {\em Computational Complexity - A Modern Approach}.
+\newblock Cambridge University Press, 2009.
+
+\bibitem[ABS10]{ABS}
+S.~Arora, B.~Barak, and D.~Steurer.
+\newblock Subexponential algorithms for unique games and related problems.
+\newblock In {\em Proc. 51st IEEE Symp. on Foundations of Computer Science},
+  2010.
+
+\bibitem[ABSS93]{ABSS}
+S.~Arora, L.~Babai, J.~Stern, and Z.~Sweedyk.
+\newblock The hardness of approximate optima in lattices, codes, and systems of
+  linear equations.
+\newblock {\em Foundations of Computer Science, IEEE Annual Symposium on},
+  0:724--733, 1993.
+
+\bibitem[AKS87]{AKS87}
+M.~Ajtai, J.~Koml\'{o}s, and E.~Szemer\'{e}di.
+\newblock Deterministic simulation in logspace.
+\newblock In {\em Proceedings of the nineteenth annual ACM symposium on Theory
+  of computing}, STOC '87, pages 132--140, New York, NY, USA, 1987. ACM.
+
+\bibitem[ALM{\etalchar{+}}98]{ALMSS}
+S.~Arora, C.~Lund, R.~Motwani, M.~Sudan, and M.~Szegedy.
+\newblock Proof verification and the hardness of approximation problems.
+\newblock {\em Journal of the ACM}, 45(3):501--555, 1998.
+
+\bibitem[AS98]{AS}
+S.~Arora and S.~Safra.
+\newblock Probabilistic checking of proofs: a new characterization of {NP}.
+\newblock {\em Journal of the ACM}, 45(1):70--122, 1998.
+
+\bibitem[AS03]{ArSu}
+S.~Arora and M.~Sudan.
+\newblock Improved low-degree testing and its applications.
+\newblock {\em Combinatorica}, 23(3):365--426, 2003.
+
+\bibitem[BBC{\etalchar{+}}01]{BBCKW}
+B.~Bollob\'{a}s, C.~Borgs, J.~Chayes, J.~H. Kim, and D.~B. Wilson.
+\newblock The scaling window of the 2-{SAT} transition.
+\newblock {\em Random Struct. Algorithms}, 18(3):201--256, May 2001.
+
+\bibitem[BFL91]{BFL}
+L.~Babai, L.~Fortnow, and C.~Lund.
+\newblock Nondeterministic exponential time has two-prover interactive
+  protocols.
+\newblock {\em Computational Complexity}, 1:3--40, 1991.
+
+\bibitem[BFLS91]{BFLS}
+L.~Babai, L.~Fortnow, L.~A. Levin, and M.~Szegedy.
+\newblock Checking computations in polylogarithmic time.
+\newblock In {\em Proc. 23rd ACM Symp. on Theory of Computing}, pages 21--32,
+  1991.
+
+\bibitem[BGS98]{BGS}
+M.~Bellare, O.~Goldreich, and M.~Sudan.
+\newblock Free bits, \textsc{PCP}s, and nonapproximability---towards tight
+  results.
+\newblock {\em SIAM Journal on Computing}, 27(3):804--915, 1998.
+
+\bibitem[BK02]{BK}
+Piotr Berman and Marek Karpinski.
+\newblock Approximating minimum unsatisfiability of linear equations.
+\newblock In {\em SODA}, pages 514--516, 2002.
+
+\bibitem[BMvT78]{BMT}
+E.~Berlekamp, R.~McEliece, and H.~van Tilborg.
+\newblock On the inherent intractability of certain coding problems (corresp.).
+\newblock {\em Information Theory, IEEE Transactions on}, 24(3):384 -- 386, may
+  1978.
+
+\bibitem[BSGH{\etalchar{+}}06]{BGHSV}
+E.~Ben-Sasson, O.~Goldreich, P.~Harsha, M.~Sudan, and S.~Vadhan.
+\newblock Robust \textsc{PCP}s of proximity, shorter \textsc{PCP}s, and
+  applications to coding.
+\newblock {\em SIAM Journal on Computing}, 36(4):889--974, 2006.
+
+\bibitem[CKW09]{CKW}
+M.~Cygan, L.~Kowalik, and M.~Wykurz.
+\newblock Exponential-time approximation of weighted set cover.
+\newblock {\em Inf. Process. Lett.}, 109(16):957--961, 2009.
+
+\bibitem[DFK{\etalchar{+}}99]{DFKRS}
+I.~Dinur, E.~Fischer, G.~Kindler, R.~Raz, and S.~Safra.
+\newblock \textsc{PCP} characterizations of \textsc{NP}: Towards a
+  polynomially-small error-probability.
+\newblock In {\em Proc. 31st ACM Symp. on Theory of Computing}, pages 29--40,
+  1999.
+
+\bibitem[DG10]{DG10}
+I.~Dinur and E.~Goldenberg.
+\newblock The structure of winning strategies in parallel repetition games.
+\newblock In {\em APPROX-RANDOM 2010}, 2010.
+
+\bibitem[DH09]{DH}
+I.~Dinur and P.~Harsha.
+\newblock Composition of low-error 2-query pcps using decodable pcps.
+\newblock In {\em FOCS}, pages 472--481, 2009.
+
+\bibitem[Din07]{Dinur}
+I.~Dinur.
+\newblock The \textsc{PCP} theorem by gap amplification.
+\newblock {\em Journal of the ACM}, 54(3):12, 2007.
+
+\bibitem[Din10]{D}
+I.~Dinur.
+\newblock Probabilistcally checkable proofs and codes.
+\newblock Technical report, Plenary Talk at International Congress of
+  Mathematicans (ICM), 2010.
+
+\bibitem[DKRS03]{DKRS}
+Irit Dinur, Guy Kindler, Ran Raz, and Shmuel Safra.
+\newblock Approximating cvp to within almost-polynomial factors is np-hard.
+\newblock {\em Combinatorica}, 23(2):205--243, 2003.
+
+\bibitem[DM11]{DM10}
+I.~Dinur and O.~Meir.
+\newblock Derandomized parallel repetition via structured pcps.
+\newblock {\em Computational Complexity}, 20(2):207--327, 2011.
+
+\bibitem[DR06]{DR}
+I.~Dinur and O.~Reingold.
+\newblock Assignment testers: Towards a combinatorial proof of the \textsc{PCP}
+  theorem.
+\newblock {\em SIAM Journal on Computing}, 36(4):975--1024, 2006.
+
+\bibitem[FGL{\etalchar{+}}96]{FGLSS}
+U.~Feige, S.~Goldwasser, L.~Lovasz, S.~Safra, and M.~Szegedy.
+\newblock Interactive proofs and the hardness of approximating cliques.
+\newblock {\em Journal of the ACM}, 43(2):68--292, 1996.
+
+\bibitem[FKN02]{FKN}
+Ehud Friedgut, Gil Kalai, and Assaf Naor.
+\newblock Boolean functions whose fourier transform is concentrated on the
+  first two levels.
+\newblock {\em Adv. in Appl. Math}, 29:427--437, 2002.
+
+\bibitem[H{\aa}s00]{Has00}
+J.~H{\aa}stad.
+\newblock On bounded occurrence constraint satisfaction.
+\newblock {\em Inf. Process. Lett.}, 74(1-2):1--6, 2000.
+
+\bibitem[H{\aa}s01]{Has97}
+J.~H{\aa}stad.
+\newblock Some optimal inapproximability results.
+\newblock {\em Journal of the ACM}, 48(4):798--859, 2001.
+
+\bibitem[IKW09]{IKW}
+R.~Impagliazzo, V.~Kabanets, and A.~Wigderson.
+\newblock New direct-product testers and 2-query\textsc{PCP}s.
+\newblock In {\em Proceedings of the 41st annual ACM symposium on Theory of
+  computing}, STOC '09, pages 131--140, 2009.
+
+\bibitem[Kho01]{Khot01}
+S.~Khot.
+\newblock Improved inapproximability results for maxclique, chromatic number
+  and approximate graph coloring.
+\newblock In {\em Proc. 42nd IEEE Symp. on Foundations of Computer Science},
+  pages 600--609, 2001.
+
+\bibitem[Kho02]{Khot}
+S.~Khot.
+\newblock On the power of unique 2-prover 1-round games.
+\newblock In {\em Proc. 34th ACM Symp. on Theory of Computing}, pages 767--775,
+  2002.
+
+\bibitem[Kho05]{LongCodeSurvey}
+S.~Khot.
+\newblock Guest column: inapproximability results via long code based
+  \textsc{PCP}s.
+\newblock {\em SIGACT News}, 36(2):25--42, 2005.
+
+\bibitem[Kho10]{K-Survey}
+S.~Khot.
+\newblock On the unique games conjecture.
+\newblock In {\em 2010 IEEE 25th Annual Conference on Computational Complexity
+  (CCC)}, pages 99 -- 121, 2010.
+
+\bibitem[KP06]{KP}
+S.~Khot and A.~K. Ponnuswami.
+\newblock Better inapproximability results for maxclique, chromatic number and
+  min-3lin-deletion.
+\newblock In {\em Proc. Automata, Languages and Programming, 33rd International
+  Colloquium}, pages 226--237, 2006.
+
+\bibitem[LFKN90]{LFKN}
+C.~Lund, L.~Fortnow, H.~J. Karloff, and N.~Nisan.
+\newblock Algebraic methods for interactive proof systems.
+\newblock In {\em {IEEE} Symposium on Foundations of Computer Science}, pages
+  2--10, 1990.
+
+\bibitem[Mos12]{M-proj}
+D.~Moshkovitz.
+\newblock The projection games conjecture and the {NP}-hardness of
+  lnn-approximating set-cover.
+\newblock In {\em APPROX'12}, 2012.
+
+\bibitem[MR10]{MR08}
+D.~Moshkovitz and R.~Raz.
+\newblock Two query \textsc{PCP} with sub-constant error.
+\newblock {\em Journal of the ACM}, 57(5):1--29, 2010.
+
+\bibitem[Raz98]{Raz}
+R.~Raz.
+\newblock A parallel repetition theorem.
+\newblock In {\em SIAM Journal on Computing}, volume~27, pages 763--803, 1998.
+
+\bibitem[RS96]{RuSu}
+R.~Rubinfeld and M.~Sudan.
+\newblock Robust characterizations of polynomials with applications to program
+  testing.
+\newblock {\em SIAM Journal on Computing}, 25(2):252--271, 1996.
+
+\bibitem[RS97]{RaSa}
+R.~Raz and S.~Safra.
+\newblock A sub-constant error-probability low-degree test and a sub-constant
+  error-probability \textsc{PCP} characterization of \textsc{NP}.
+\newblock In {\em Proc. 29th ACM Symp. on Theory of Computing}, pages 475--484,
+  1997.
+
+\bibitem[Sze99]{S99}
+Mario Szegedy.
+\newblock Many-valued logics and holographic proofs.
+\newblock In {\em ICALP}, pages 676--686, 1999.
+
+\end{thebibliography}

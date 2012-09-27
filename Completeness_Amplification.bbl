@@ -1,0 +1,142 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{BSGH{\etalchar{+}}06}
+
+\bibitem[ALM{\etalchar{+}}98]{ALMSS}
+S.~Arora, C.~Lund, R.~Motwani, M.~Sudan, and M.~Szegedy.
+\newblock Proof verification and the hardness of approximation problems.
+\newblock {\em Journal of the ACM}, 45(3):501--555, 1998.
+
+\bibitem[AS98]{AS}
+S.~Arora and S.~Safra.
+\newblock Probabilistic checking of proofs: a new characterization of {NP}.
+\newblock {\em Journal of the ACM}, 45(1):70--122, 1998.
+
+\bibitem[AS03]{ArSu}
+S.~Arora and M.~Sudan.
+\newblock Improved low-degree testing and its applications.
+\newblock {\em Combinatorica}, 23(3):365--426, 2003.
+
+\bibitem[BFLS91]{BFLS}
+L.~Babai, L.~Fortnow, L.~A. Levin, and M.~Szegedy.
+\newblock Checking computations in polylogarithmic time.
+\newblock In {\em Proc. 23rd ACM Symp. on Theory of Computing}, pages 21--32,
+  1991.
+
+\bibitem[BSGH{\etalchar{+}}06]{BGHSV}
+E.~Ben-Sasson, O.~Goldreich, P.~Harsha, M.~Sudan, and S.~Vadhan.
+\newblock Robust \textsc{PCP}s of proximity, shorter \textsc{PCP}s, and
+  applications to coding.
+\newblock {\em SIAM Journal on Computing}, 36(4):889--974, 2006.
+
+\bibitem[DFK{\etalchar{+}}99]{DFKRS}
+I.~Dinur, E.~Fischer, G.~Kindler, R.~Raz, and S.~Safra.
+\newblock \textsc{PCP} characterizations of \textsc{NP}: Towards a
+  polynomially-small error-probability.
+\newblock In {\em Proc. 31st ACM Symp. on Theory of Computing}, pages 29--40,
+  1999.
+
+\bibitem[DG08]{DG08}
+Irit Dinur and Elazar Goldenberg.
+\newblock Locally testing direct product in the low error range.
+\newblock In {\em FOCS}, pages 613--622, 2008.
+
+\bibitem[Din07]{Dinur}
+I.~Dinur.
+\newblock The \textsc{PCP} theorem by gap amplification.
+\newblock {\em Journal of the ACM}, 54(3):12, 2007.
+
+\bibitem[DM11]{DM10}
+Irit Dinur and Or~Meir.
+\newblock Derandomized parallel repetition via structured pcps.
+\newblock {\em Computational Complexity}, 20(2):207--327, 2011.
+
+\bibitem[DR06]{DR}
+I.~Dinur and O.~Reingold.
+\newblock Assignment testers: Towards a combinatorial proof of the \textsc{PCP}
+  theorem.
+\newblock {\em SIAM Journal on Computing}, 36(4):975--1024, 2006.
+
+\bibitem[FGL{\etalchar{+}}96]{FGLSS}
+U.~Feige, S.~Goldwasser, L.~Lovasz, S.~Safra, and M.~Szegedy.
+\newblock Interactive proofs and the hardness of approximating cliques.
+\newblock {\em Journal of the ACM}, 43(2):268--292, 1996.
+
+\bibitem[FK95]{FK}
+U.~Feige and J.~Kilian.
+\newblock Impossibility results for recycling random bits in two-prover proof
+  systems.
+\newblock In {\em Proc. 27th ACM Symp. on Theory of Computing}, pages 457--468,
+  1995.
+
+\bibitem[FR04]{FR04}
+Uriel Feige and Daniel Reichman.
+\newblock On systems of linear equations with two variables per equation.
+\newblock In {\em APPROX-RANDOM}, pages 117--127, 2004.
+
+\bibitem[GM11]{GM11}
+Prasant Gopal and Dana Moshkovitz.
+\newblock Making the long code longer: Or completeness amplification of
+  {PCP}'s.
+\newblock Technical report, In Preparation. Massachusetts Institute of
+  Technology, 2011.
+
+\bibitem[Gol97]{Sample}
+Oded Goldreich.
+\newblock A sample of samplers - a computational perspective on sampling.
+\newblock Technical Report TR97-020, Electronic Colloquium on Computational
+  Complexity, 1997.
+
+\bibitem[H{\aa}s00]{Has00}
+Johan H{\aa}stad.
+\newblock On bounded occurrence constraint satisfaction.
+\newblock {\em Inf. Process. Lett.}, 74(1-2):1--6, 2000.
+
+\bibitem[H{\aa}s01]{Has97}
+J.~H{\aa}stad.
+\newblock Some optimal inapproximability results.
+\newblock {\em Journal of the ACM}, 48(4):798--859, 2001.
+
+\bibitem[IJKW10]{IJKW}
+Russell Impagliazzo, Ragesh Jaiswal, Valentine Kabanets, and Avi Wigderson.
+\newblock Uniform direct product theorems: Simplified, optimized, and
+  derandomized.
+\newblock {\em SIAM J. Comput.}, 39(4):1637--1665, 2010.
+
+\bibitem[KP06]{KP}
+S.~Khot and A.~K. Ponnuswami.
+\newblock Better inapproximability results for maxclique, chromatic number and
+  min-3lin-deletion.
+\newblock In {\em Proc. Automata, Languages and Programming, 33rd International
+  Colloquium}, pages 226--237, 2006.
+
+\bibitem[LFKN90]{LFKN}
+C.~Lund, L.~Fortnow, H.~J. Karloff, and N.~Nisan.
+\newblock Algebraic methods for interactive proof systems.
+\newblock In {\em {IEEE} Symposium on Foundations of Computer Science}, pages
+  2--10, 1990.
+
+\bibitem[MR10]{MR08}
+D.~Moshkovitz and R.~Raz.
+\newblock Two query \textsc{PCP} with sub-constant error.
+\newblock {\em Journal of the ACM}, 57(5):1--29, 2010.
+
+\bibitem[Raz98]{Raz}
+R.~Raz.
+\newblock A parallel repetition theorem.
+\newblock In {\em SIAM Journal on Computing}, volume~27, pages 763--803, 1998.
+
+\bibitem[RS96]{RuSu}
+R.~Rubinfeld and M.~Sudan.
+\newblock Robust characterizations of polynomials with applications to program
+  testing.
+\newblock {\em SIAM Journal on Computing}, 25(2):252--271, 1996.
+
+\bibitem[RS97]{RaSa}
+R.~Raz and S.~Safra.
+\newblock A sub-constant error-probability low-degree test and a sub-constant
+  error-probability \textsc{PCP} characterization of \textsc{NP}.
+\newblock In {\em Proc. 29th ACM Symp. on Theory of Computing}, pages 475--484,
+  1997.
+
+
+\end{thebibliography}

@@ -1,0 +1,135 @@
+ \documentclass[11pt]{article}
+\usepackage[margin=1in,letterpaper]{geometry}
+\usepackage{amssymb,amsthm}
+\usepackage{commath}
+\usepackage{amsmath}
+\usepackage{multirow}
+%\usepackage{algorithm}       
+%\usepackage{algpseudocode}
+\usepackage{graphics}
+%\usepackage{skt}
+%\renewcommand{\baselinestretch}{1.66}
+\usepackage{wrapfig}
+\usepackage{hyperref}
+\hypersetup{
+ pdfborder = 0 0 0,
+ colorlinks=true,
+ citecolor=blue,
+ backref=true,
+% linkcolor=blue,
+% urlcolor=blue,
+}
+\usepackage[hyperpageref]{backref} 
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{example}{Example}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{invariant}[theorem]{Invariant}
+\newtheorem{definition}{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}[definition]{Fact}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{openproblem}{Open Problem}
+\newtheorem{observation}[theorem]{Observation}
+\newtheorem*{thma}{Theorem}
+\newtheorem*{col}{Corollary}
+\newcommand{\eat}[1]{}
+\newcommand{\eL}{{\cal L}}
+\newcommand{\A}{{\cal A}}
+\newcommand{\R}{{\sf r}}
+\newcommand{\s}{{\sf S}}
+\newcommand{\LC}{{\sf LC}}
+\newcommand{\remark}[1]{{\bf #1}}
+\newcommand{\E}[2]{{\mathbb{E}}_{#1}\left[#2\right]}                                                                                                                                                
+
+
+\begin{document}
+\eat{\begin{abstract}
+  The goal of this note is to understand the soundness of a certain variant
+of tensored tests of H{\aa}stad's Long Code Test.
+\end{abstract}
+} Say $f$ is a purported long code table given to the verifier. We
+denote by $T_\R$ the test performed by the verifier on randomness
+$\R$. The verifier accepts iff $T_\R$ evaluates to $0$. We are
+interested in analysing the soundess of a variant of $T_{\R_1} \cdot
+T_{\R_2}$, for $\R_1, R_2$ drawn from the uniform distribution. Our
+new verifier chooses $a,b,c,d$ uniformly at random from $\{0,1\}^{\log
+  |f|}$ and $x,y$ are noise vectors, where each coordinate of $x$ and
+$y$ is set independently to $0$ with probability $1 - \rho$ and $1$
+otherwise.
+\begin{align*} 
+  T_{\R_1} \cdot T_{\R_2} = & \left[f(a) + f(b) + f(a + b + x)\right]\cdot\left[f(c) + f(d) + f(c+d+y)\right] = 0\\
+  \implies & f(a) \cdot f(c) + f(a) \cdot f(d) + f(a) \cdot f(c +d +y) \ldots \\ & \ \ \ f(a+b+x) \cdot f(c) + f(a+b+x) \cdot f(d) + f(a+b+x) \cdot f(c + d+ y)  = 0 \\
+  \implies & f(a\cdot c) + f(a\cdot d) + f(a \cdot (c +d +y)) \ldots \\ & \ \ \  f((a+b+x) \cdot c) + f((a+b+x) \cdot d) + f((a+b+x) \cdot (c+d+y)) = 0\\
+\end{align*}
+
+The new verifier checks if the aforementioned equation evaluates to
+$0$. Since the product terms like $a\cdot c$ and others may not be
+uniformly distributed, we use a standard trick of replacing $f(a\cdot
+c)$ by $f(e + a\cdot c) + f(e)$, where $e$ is chosen uniformly at
+random from $\{0,1\}^{\log |f|}$. We also transform $\{0,1\}$ to
+$\{\pm 1\}$ via the mapping $b \rightarrow (-1)^b$. This maps the
+usual XOR operation on $GF(2)$ to a product operation. We would now
+analyse the soundness of the above test. Say, the verifier accepts the
+test by probability $1/2 + \delta$, for some $\delta > 0$.
+
+
+\begin{align*}
+  2 \cdot \delta = & \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[ \left(\sum_{\alpha_1} \hat{f}_{\alpha_1}\chi_{\alpha_1}(ace) \right) \cdot \left(\sum_{\alpha_2}\hat{f}_{\alpha_2} \chi_{\alpha_2}(e) \right) \cdot \left(\sum_{\alpha_3} \hat{f}_{\alpha_3}\chi_{\alpha_3}(ade) \right) \ldots \\ & \hspace*{2in}\ldots \left(\sum_{\alpha_{17}} \hat{f}_{\alpha_{17}}\chi_{\alpha_{17}}( acadaybcbdbyxcxdxye)\right) \cdot \left(\sum_{\alpha_{18}}\hat{f}_{\alpha_{18}} \chi_{\alpha_{18}}(e) \right)\Bigg]\\
+ 2 \cdot \delta = & \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[\sum_{\alpha_1, \alpha_2, \ldots \alpha_{18}} \hat{f}_{\alpha_1} \hat{f}_{\alpha_2} \ldots \hat{f}_{\alpha_{18}} \ \chi_{\alpha_1}(ace) \cdot \chi_{\alpha_2}(e) \cdot \chi_{\alpha_3}(ade) \ldots \chi_{\alpha_{17}}(acadaybcbdbyxcxdxye) \cdot \chi_{\alpha_{18}}(e) \Bigg] \\
+\end{align*}
+
+By linearity of expectation, the above expression may be written as
+
+\begin{align*}
+  2 \cdot \delta = & \ \sum_{\alpha_1, \alpha_2 \ldots \alpha_{18}} \hat{f}_{\alpha_1}\hat{f}_{\alpha_2} \ldots \hat{f}_{\alpha_{18}}\ \ \ \mathbb{E}_{a,b,c,d,e,x,y}\Bigg[\chi_{\alpha_1}(ace) \cdot \chi_{\alpha_2}(e) \cdot \chi_{\alpha_3}(ade) \cdot \chi_{\alpha_4}(e) \ldots \\ & \hspace*{2in} \ldots \chi_{\alpha_{17}}\left(acadaybcbdbyxcxdxye\right) \cdot \chi_{\alpha_{18}}(e) \Bigg] \\
+\end{align*}
+
+
+\noindent Since the fourier basis are orthonormal, the expectation is $0$ unless $\alpha_1 = \alpha_2 \ldots = \alpha_{18}$. Therefore,
+\begin{align*}
+2\delta = & \sum_\alpha \hat{f}^{18}_{\alpha}\ \ \mathbb{E}_{a,b,c,d,e,x,y} \Bigg[\chi_\alpha(ace \cdot e \cdot ade \cdot e \cdot acadaye \cdot e \cdot bce \cdot e \cdot bde \cdot e \\ & \ \ \ \cdot bcbdbye \cdot e \cdot acbcxce \cdot e \cdot adbdxde \cdot e \cdot  acadaybcbdbyxcxdxye \cdot e) \Bigg]\\
+        = & \sum_\alpha \hat{f}^{18}_\alpha \ \mathbb{E}_{x,y}\Big[xy\Big]
+\end{align*}
+
+\noindent Notice that each coordinate of $z$ in the above equation is
+drawn is chosen independently from the product distribution of $x\cdot
+y$. Since, each coordinate of $x,y$ is independently set to $1$ with
+probability $1 - \rho$ and $-1$ otherwise, $\E{}{z_w} = \E{}{x_w \cdot
+  y_w} = 1 \cdot ((1 - \rho)^2 + \rho^2) - 1 \cdot 2 \cdot (1 -\rho)
+\cdot \rho = 1 - 4\rho + 4 \rho^2.$ Now, since each coordinate is
+chosen independently, $\E{z}{\chi_\alpha(z)} = \E{z}{\prod_{w \in
+    \alpha}z_w}$.  Hence,
+\begin{align*}
+  2 \delta &= \sum_{\alpha} \hat{f}_\alpha^{18} (1 - 4\cdot \rho\cdot(1 - \rho))^{|\alpha|} \\
+\end{align*}\eat{
+  &\le \sum_{\alpha} \hat{A}_\alpha^18 (1 - 4\rho )^{|\alpha|} \ \ \ \ \  \ \  \because \hat{A}_\alpha \le 1\\
+  &\le \sum_{|\alpha| =1} \hat{A}_\alpha^2 (1 - 2\rho) +
+  \sum_{|\alpha| > 1} \hat{A}_\alpha^2 (1 - 2\rho)^{|\alpha|}, \ \ \ \
+  \hat{A}_\emptyset = 0 \ \ \mbox{due to folding}
+%  &\le \sum_{|\alpha| =1} \hat{A}_\alpha^2 (1 - 2\rho) + \sum_{|\alpha| > 1} \hat{A}_\alpha^2 (1 - 2\rho)^{|\alpha|}  \\
+ \end{align*}
+
+ \noindent Since $A$ is assumed to have been folded, $\hat{A}_{\alpha}
+ = 0$ if $|\alpha|$ is even. Hence, $(1 - 2\rho)^{|\alpha|} \le (1 -
+ 2\rho)^{3}$.  Therefore, the above expression can be written as follows.
+\begin{align*}
+  1 - 2\delta &\le \sum_{|\alpha| =1} \hat{A}_\alpha^2 (1 - 2\rho) + \sum_{|\alpha| > 1} \hat{A}_\alpha^2 (1 - 2\rho)^{3} \\
+  & \le (1 -\Phi) (1 - 2\rho) + \Phi ( 1 - 2\rho)^{3} \ \ \ \  \ \ \
+  \mbox{Let} \sum_{\alpha, |\alpha| > 1}\hat{A}^2_\alpha = \Phi\\
+ 1 - 2\delta &\le (1 - 2\rho) (1 - \Phi + \Phi (1 -2 \rho)^2) \\
+{1 - 2\delta}/{1 - 2\rho} & \le (1  - \Phi (1 - (1 - 2\rho)^2)\\             
+1 - 2(\delta - \rho) & \le 1 - \Phi (1 - (1 - 2\rho)^2)\\
+\Phi & \le 2(\delta - \rho)/(4\rho - 4\rho^2)
+\end{align*}
+\noindent Since, $\rho$ is a fixed parameter, we have $\Phi = {\cal
+  O}(\delta)$ At which point, we recall a result of Friedgut, Kalai
+and Naor \cite{FKN} which (informally) states that if the fourier
+coefficients are concentrated on the lowest two levels, then the
+function is close to a constant function or a function that is
+determined by a single coordinate.}
+
+\end{document}

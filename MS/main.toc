@@ -1,0 +1,35 @@
+\contentsline {chapter}{\numberline {1}Introduction}{13}
+\contentsline {section}{\numberline {1.1}Application to The Threshold Behavior of Approximation}{15}
+\contentsline {section}{\numberline {1.2}Application to \textsc {Min-3Lin-Deletion} and \textsc {Nearest-Codeword-Problem}}{17}
+\contentsline {section}{\numberline {1.3}The Completeness Amplification of Khot and Ponnuswami}{18}
+\contentsline {section}{\numberline {1.4}Our Completeness Amplification}{20}
+\contentsline {chapter}{\numberline {2}Tensoring}{21}
+\contentsline {section}{\numberline {2.1}Preliminaries}{21}
+\contentsline {subsection}{\numberline {2.1.1}Hamming Weight}{21}
+\contentsline {subsection}{\numberline {2.1.2}Linear Systems of Equations}{22}
+\contentsline {section}{\numberline {2.2}Tensoring}{22}
+\contentsline {chapter}{\numberline {3}Completeness Amplification of Assignment Tester}{25}
+\contentsline {section}{\numberline {3.1}Basic Assignment Tester}{28}
+\contentsline {paragraph}{Standard Definitions.}{28}
+\contentsline {paragraph}{The Long Code Test.}{29}
+\contentsline {paragraph}{Folding.}{30}
+\contentsline {section}{\numberline {3.2}Completeness Amplification}{32}
+\contentsline {paragraph}{Soundness Amplification of the Tester.}{34}
+\contentsline {chapter}{\numberline {4}Final Brick: Composition}{41}
+\contentsline {section}{\numberline {4.1}Robust Composition}{43}
+\contentsline {paragraph}{Notations.}{43}
+\contentsline {section}{\numberline {4.2}Towards Reducing Queries, Soundness Amplification}{44}
+\contentsline {section}{\numberline {4.3}Hardness of Label-Cover}{47}
+\contentsline {chapter}{\numberline {5}Hardness Results}{51}
+\contentsline {paragraph}{Hadamard Codes.}{51}
+\contentsline {paragraph}{Folding.}{51}
+\contentsline {section}{\numberline {5.1}The PCP verifier}{52}
+\contentsline {section}{\numberline {5.2}Inapproximability Results}{54}
+\contentsline {chapter}{\numberline {6}Polynomially Small Completeness Error}{55}
+\contentsline {section}{\numberline {6.1}Construction of Basic Tester}{59}
+\contentsline {section}{\numberline {6.2}Iterated Tester}{60}
+\contentsline {section}{\numberline {6.3}Final Composition}{64}
+\contentsline {subsection}{\numberline {6.3.1}Soundness Amplification}{64}
+\contentsline {section}{\numberline {6.4}New Hardness Results}{66}
+\contentsline {chapter}{\numberline {7}Nearest Codeword Problem}{69}
+\contentsline {paragraph}{Prior Results.}{69}

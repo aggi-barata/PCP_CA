@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: main.aux
+A level-1 auxiliary file: cover.aux
+A level-1 auxiliary file: contents.aux
+A level-1 auxiliary file: intro.aux
+A level-1 auxiliary file: Tensoring.aux
+A level-1 auxiliary file: inner.aux
+A level-1 auxiliary file: Composition.aux
+A level-1 auxiliary file: Hardness.aux
+A level-1 auxiliary file: Iterated.aux
+A level-1 auxiliary file: biblio.aux
+The style file: plain.bst
+Database file #1: Completeness_Amplification.bib
+You've used 34 entries,
+            2118 wiz_defined-function locations,
+            889 strings with 13031 characters,
+and the built_in function-call counts, 12718 in all, are:
+= -- 1266
+> -- 528
+< -- 13
++ -- 214
+- -- 174
+* -- 872
+:= -- 2000
+add.period$ -- 102
+call.type$ -- 34
+change.case$ -- 190
+chr.to.int$ -- 0
+cite$ -- 34
+duplicate$ -- 516
+empty$ -- 1053
+format.name$ -- 174
+if$ -- 2736
+int.to.chr$ -- 0
+int.to.str$ -- 34
+missing$ -- 33
+newline$ -- 173
+num.names$ -- 68
+pop$ -- 197
+preamble$ -- 1
+purify$ -- 155
+quote$ -- 0
+skip$ -- 392
+stack$ -- 0
+substring$ -- 917
+swap$ -- 149
+text.length$ -- 13
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 136
+warning$ -- 0
+while$ -- 133
+width$ -- 36
+write$ -- 375

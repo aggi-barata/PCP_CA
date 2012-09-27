@@ -1,0 +1,172 @@
+\chapter{Hardness Results}\label{section:hardness}
+
+We begin by borrowing some machinery from the PCP literature. 
+We will deal with Boolean functions $A:\mathbb{F}^u_2 \rightarrow
+\{-1, 1\}$.  A function is called linear if $A(x \oplus y) = A(x)
+\cdot A(y)$, where $\oplus$ denotes vector addition over
+$\mathbb{F}_2$. Note that there are precisely $2^u$ linear functions:
+for every $\alpha\ \in \ \mathbb{F}^u_2$, $\chi_\alpha$
+defined as
+\[
+\chi_\alpha(a) = (-1)^{a \cdot \alpha} ~~\forall a \in \mathbb{F}^u_2
+\]
+
+
+\paragraph{Hadamard Codes.} Our PCP verifier will
+expect an encoding of the proof described in the prequel.
+Specifically, we will use Hadamard codes which we define now.
+
+
+\begin{definition}[Hadamard Encoding]
+Hadamard code of $p \in \mathbb{F}^{u}_2$ is the $2^u$¯bit string 
+$\{\chi_p(a)\}_{a \in \mathbb{F}^u_2}$. We denote it by Hadamard($p$).
+\end{definition}
+
+Recall that the string $x = Q(W)$ read by the aforementioned verifier
+is supposed to satisfy certain linear conditions modulo $2$. Let these
+constraints be $h_1 \cdot x = \eta_1$, \ldots $h_u \cot x = \eta_u$,
+where $h_1, h_2, h_3 \ldots h_u \in \mathbb{F}^{3u}_2$ and $\eta_1,
+\eta_2 \ldots \eta_u \in \mathbb{F}_2$.
+
+\paragraph{Folding.}Informally, {\em Folding} is a technique used to enable the verifier to 
+ignore the linear constraint test. Suppose that $C$ is a Hadamard code
+of $x$ and $x$ satisfies the constraints mentioned above.  Let
+${\mathcal H}$ be the linear subspace spanned by the vectors $h_1, h_2
+\ldots h_u$.  Then for any vector $b$ and any vector $h \in {\mathcal
+  H}$, $h = \oplus \rho_i \cdot h_i$, we have
+\[
+      C(b \oplus h) = C(b)\cdot(-1)^{\sum_i \rho_i \eta_i}
+\]
+
+One may generalize this observation, for any function $F:
+\mathbb{F}^{3u}_2 \rightarrow \{-1, 1\}$, Let $v_b$ denote the
+lexicographically smallest vector in the set of vectors $b \oplus
+{\mathcal H}$ (coset of ${\mathcal H}$).  we one may define a function
+$F'$ as:
+\[
+b = v_b \oplus \rho_i\cdot h_i, ~~ \rho_1,\ldots \rho_u \in \mathbb{F}_2
+F'(b) = F(b) \cdot (-1)^{\sum_i \rho_i \eta_i}
+\]
+$F'$ is said to be a folding of $F$ over the linear constraints.
+
+The verifier we design requires the supposed Hadamard codes be folded
+over the respective constraints. This does not alter much. One
+difficulty that it may introduce is ensuring that this requirement is
+enforced.  This is done as follows: If the verifier is required to
+read $F(b)$ from the code, it can read $F(v_b)$ and can calculate
+$F(b)$ from the expression given in the prequel.
+
+A comment on folding of Hadamard codes is due. We will eventually need
+to show that verifier accepts the purported proofs with a good enough
+probability, then these ``supposed'' proofs can be decoded to
+construct an assignment of the variables which satisfies a significant
+fraction of the constraints. Decoding of $F$ gives $h$ with
+probability $\widehat{H}^2_h$. Now, {\em folding} ensures that any $h$
+given by this decoding procedure satisfies the linear constraints on
+variables. Thus, folding lets us to ignore the linear constraints 
+altogether.
+
+\section{The PCP verifier}
+We now define and analyze our PCP verifier whose test
+s will be linear equations over $3$ 
+variables. The verifier expects to have
+proofs $(\Pi_A, \Pi_B)$ which are the Hadamard encoding of the assignments
+given to the vertices in $A$ and $B$. The verifier does the following:
+\begin{enumerate}
+\item Pick at random edge $e = (x,y)$. Let $f$, $g$ be the corresponding
+ Hadamard encoding of the labels of vertices $x$ and $y$ respectively; 
+  and $h$ be the corresponding projection function between $\Sigma_A$ and $\Sigma_B$.
+$h^{-1}(q)$ denotes the unique vector $p \in \Sigma_A$ such that $h(p)  = q$. 
+
+\item Choose ${\bf v,y}$ at random conditioned on ${\bf v} \in \{\pm 1\}^{\log |\Sigma_A|}$ 
+and ${\bf y} \in \{\pm 1\}^{\log |\Sigma_B|}$. Accept iff 
+\[
+           f({\bf v}) \cdot g({\bf y}) = f(h^{-1}({\bf y}) \oplus {\bf v})
+\]
+\end{enumerate}
+
+We begin by stating a Theorem of Khot \cite{Khot01}. Khot uses a
+Hadamard based PCP on an instance of {\sc Label-cover} produced by
+applying parallel repetition on a linear PCP with completeness $1 -
+\epsilon$ and soundness $\mu$. The linear PCP is queried $k$ times in
+parallel and has a soundness of $S$. We start with a {\sc Label-Cover} with 
+better parameters, so we set $k = 1$. We now take the liberity and rephrase 
+Khot's Theorem about the guarantees provided by the verifier $V_{lin}$ 
+(Page 4, Theorem 3.1 in \cite{Khot01}) in the language of {\sc Label-Cover}.
+
+
+\begin{theorem} \label{khot}
+Every {\sc Label-Cover} instance with linear projection tests and size $n$
+has a verifier $V_{lin}$ which
+\begin{itemize}
+
+\item Uses $r = \log n$ + ${\cal O}(1)$ random bits.
+
+\item Performs linear tests each with arity $3$.
+
+\item Has completeness at least $1 - \epsilon$.
+
+\item Has soundness $\frac{1}{2} + \delta$ provided $ S < \delta^2$,
+  where $S$ is the soundness of {\sc Label-Cover} instance.
+\end{itemize}
+\end{theorem}
+
+\begin{theorem}\label{3lin}
+ For some $\alpha, \beta > 0$, {\sc 3SAT} has a verifier ${\cal V}$ that has the following properties.
+\begin{itemize}
+\item Uses $\log n \cdot \left(1 + o\left(1\right)\right)$ random bits.
+
+\item The tests performed by ${\cal V}$ are linear over $3$ variables. 
+
+\item If the {\sc SAT} instance is satisfiable, ${\cal V}$ accepts it with probability at 
+least $1 - \frac{1}{(\log n)^\alpha}$.
+
+\item If it is unsatisfiable, ${\cal V}$ accepts any proof with probability at most $\frac{1}{2} + \frac{1}{(\log n)^{\beta'}}$.
+\end{itemize}
+
+\end{theorem}
+\noindent{\em Proof.}  We now use Khot's verifier $V_{lin}$ on the
+{\sc Label-Cover} instance in Corollary \ref{oldcover}. Specifically,
+set $\epsilon = \frac{1}{(\log n)^\alpha}$, and $\delta = \frac{1}{(\log
+n)^{\sqrt[3]{\beta}}}$.  Completeness follows trivially from Theorem
+\ref{khot}. Since $S < \delta^2$, the soundness of $V_{lin}$ is $\frac{1}{2} +
+\frac{1}{(\log n)^{\beta'}}$. This completes the proof. \qed
+
+
+%{\em Completeness:} The verifier's test has no
+%additional error apart from that introduced by the outer (Theorem
+%\ref{sound}). In the good case, at least $1 - 1/N^k$ fraction of the
+%edges can be satisfied. So, the probability of the verifier accepting
+%the label-cover instance is $1 - 1/N^k$.\\
+%{\em Soundness:}  Follow from Lemma \ref{soundness} that blah...blah.
+
+\section{Inapproximability Results}
+
+The PCP theorem \ref{3lin} immediately yields a hardness of $\frac{1}{2} +
+\frac{1}{\log n)^\beta}$ for {\sc 3Lin} assuming ${\sf P \ne NP}$. This
+translates into a hardness factor of
+$\frac{7}{8} + \frac{1}{(\log n)^\beta}$ for {\sc 3Sat}.\\
+
+\begin{corollary}[{\sc 3Lin Hardness}]
+  For some $\alpha, \beta > 0$, given a {\sc 3Lin} instance $\Phi$ of
+  size $n$ it is {\sf NP}-hard to distinguish between the following
+  two cases.
+\begin{itemize}
+\item There is an assignment which satisfies $(1 - \frac{1}{(\log n)^\alpha})$-fraction of $\Phi$.
+\item Every assignment can satisfy at most $(\frac{1}{2} + \frac{1}{(\log
+      n)^{\beta}})$-fraction of $\Phi$.
+\end{itemize}
+\end{corollary}
+\noindent {\em Proof.} The constraint satisfaction version of Theorem
+\ref{3lin}. \qed \\
+
+\begin{corollary}[{\sc 3Sat Hardness}]
+  For some $\alpha, \beta > 0$, it is {\sf NP}-hard to distinguish if a given 
+{\sc 3Sat} instance $\Upsilon$  of size $n$ which of the following holds.
+\begin{itemize}
+\item There is an assignment which satisfies $(1 -
+    \frac{1}{(\log n)^\alpha})$-fraction of $\Upsilon$.
+\item Every assignment can satisfy at most $(\frac{7}{8} + \frac{1}{(\log n)^{\beta}})$-fraction of $\Upsilon$.
+\end{itemize}
+\end{corollary}
+
